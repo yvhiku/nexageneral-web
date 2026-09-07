@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.env*
+!.env.example
+.DS_Store
+*.tar.gz
+
+# Original reference inputs are preserved locally; web assets are in public/.
+/nexaparetpose.png
+/nexastayspose.png
+/nexagopose.png
