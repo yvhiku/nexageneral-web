@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
 import { DocumentLocale } from "@/components/document-locale";
 import { HomePage } from "@/components/home-page";
+import { homeSeo, toMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "نكسا — نظام بيئي للحياة اليومية",
-  description:
-    "نظام بيئي متصل بُني في المغرب. اكتشف Nexa Stays وعائلتنا المتنامية من الخدمات.",
-  alternates: { canonical: "/ar/" },
+  ...toMetadata(homeSeo.ar),
   openGraph: {
+    ...toMetadata(homeSeo.ar).openGraph,
     locale: "ar_MA",
-    title: "نكسا — نظام بيئي للحياة اليومية",
-    description:
-      "خدمات رقمية متخصصة. بُنيت في المغرب. نبدأ مع Nexa Stays.",
   },
 };
 

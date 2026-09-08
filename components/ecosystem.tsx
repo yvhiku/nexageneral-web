@@ -173,7 +173,7 @@ export function Ecosystem() {
           </svg>
         </div>
         <div className="network-parent">
-          <Brand size={58} />
+          <Brand size={72} />
           <span>nexa</span>
         </div>
         {products.map((product, i) => (
@@ -191,7 +191,7 @@ export function Ecosystem() {
             aria-pressed={selected === i}
             aria-controls="network-detail"
           >
-            <Brand product={product.logo ?? product.slug} size={28} />
+            <Brand product={product.logo ?? product.slug} size={36} />
             <span>{product.name}</span>
           </button>
         ))}

@@ -7,6 +7,7 @@ import { Journey } from "@/components/journey";
 import { Roadmap } from "@/components/roadmap";
 import { Reveal } from "@/components/reveal";
 import { products, STAYS_URL } from "@/lib/products";
+import { getHomeJsonLdGraph } from "@/lib/entity";
 import {
   type Locale,
   getDictionary,
@@ -25,14 +26,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "Nexa",
-            url: "https://nexa.ma",
-            logo: "https://nexa.ma/brand/nexa.webp",
-            sameAs: ["https://www.linkedin.com/company/nexa-superapp/"],
-          }),
+          __html: JSON.stringify(getHomeJsonLdGraph()),
         }}
       />
       <Reveal />
@@ -81,7 +75,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <span className="hero-art-caption">{t.hero.artCaption}</span>
           <Mascot name="parent" priority />
           <div className="hero-signature">
-            <Brand size={24} />
+            <Brand size={32} />
             <span>
               {t.hero.signatureLine1}
               <br />
@@ -100,6 +94,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <br />
           <span>{t.idea.title2}</span>
         </h2>
+        <p className="entity-definition">{t.idea.entityBlock}</p>
         <p>{t.idea.body}</p>
       </section>
       <section id="ecosystem" className="ecosystem-section section-pad">
@@ -134,12 +129,12 @@ export function HomePage({ locale }: { locale: Locale }) {
                   </span>
                   <ArrowUpRight size={18} />
                 </div>
-                <Brand product={p.logo ?? p.slug} size={48} />
+                <Brand product={p.logo ?? p.slug} size={64} />
                 <h3>{p.name}</h3>
                 <p>{t.productShort[p.slug] ?? p.short}</p>
                 <Status
                   status={translateStatus(locale, p.status)}
-                  live={p.status === "Live"}
+                  live={p.status === "Launching" || p.status === "Live"}
                 />
               </Link>
             ))}
@@ -165,10 +160,10 @@ export function HomePage({ locale }: { locale: Locale }) {
         <article className="stays-story" data-reveal>
           <div className="story-copy">
             <div className="product-lockup">
-              <Brand product="stays" size={32} />
+              <Brand product="stays" size={42} />
               <span>nexa stays</span>
               <Status
-                status={translateStatus(locale, "Live")}
+                status={translateStatus(locale, "Launching")}
                 live
               />
             </div>
@@ -210,9 +205,9 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="paired-stories">
           <article className="product-story go-story" data-reveal>
             <div className="product-lockup">
-              <Brand product="go" size={31} />
+              <Brand product="go" size={42} />
               <span>nexa go</span>
-              <Status status={translateStatus(locale, "Coming soon")} />
+              <Status status={translateStatus(locale, "Planned")} />
             </div>
             <div className="small-story-copy">
               <h2>
@@ -229,9 +224,9 @@ export function HomePage({ locale }: { locale: Locale }) {
           </article>
           <article className="product-story fresh-story" data-reveal>
             <div className="product-lockup">
-              <Brand product="fresh" size={31} />
+              <Brand product="fresh" size={42} />
               <span>nexa fresh</span>
-              <Status status={translateStatus(locale, "Coming soon")} />
+              <Status status={translateStatus(locale, "Planned")} />
             </div>
             <div className="small-story-copy">
               <h2>
@@ -250,16 +245,18 @@ export function HomePage({ locale }: { locale: Locale }) {
         <article className="pay-story" data-reveal>
           <div className="pay-copy">
             <div className="product-lockup">
-              <Brand product="pay" size={32} />
+              <Brand product="pay" size={42} />
               <span>nexa pay</span>
-              <Status status={translateStatus(locale, "In development")} />
+              <Status
+                status={translateStatus(locale, "In development roadmap")}
+              />
             </div>
             <h2>
               {t.stories.payTitle1}
               <br />
               {locale === "en" ? (
                 <>
-                  you and <em>{t.stories.payTitleEm}</em>
+                  <em>{t.stories.payTitleEm}</em>
                 </>
               ) : (
                 <em>{t.stories.payTitleEm}</em>
@@ -276,9 +273,9 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="paired-stories">
           <article className="product-story market-story" data-reveal>
             <div className="product-lockup">
-              <Brand product="market" size={31} />
+              <Brand product="market" size={42} />
               <span>nexa market</span>
-              <Status status={translateStatus(locale, "Coming soon")} />
+              <Status status={translateStatus(locale, "Long-term roadmap")} />
             </div>
             <div className="small-story-copy">
               <h2>{t.stories.marketHeadline}</h2>
@@ -291,9 +288,9 @@ export function HomePage({ locale }: { locale: Locale }) {
           </article>
           <article className="product-story jobs-story" data-reveal>
             <div className="product-lockup">
-              <Brand product="jobs" size={31} />
+              <Brand product="jobs" size={42} />
               <span>nexa jobs</span>
-              <Status status={translateStatus(locale, "Coming soon")} />
+              <Status status={translateStatus(locale, "Long-term roadmap")} />
             </div>
             <div className="small-story-copy">
               <h2>{t.stories.jobsHeadline}</h2>
@@ -346,7 +343,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             {t.journey.blurb2}
           </p>
         </div>
-        <Journey />
+        <Journey locale={locale} />
       </section>
       <section className="proof-section container" data-reveal>
         <Mascot name="stays" />
@@ -413,7 +410,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             {t.roadmap.link} <Arrow />
           </Link>
         </div>
-        <Roadmap />
+        <Roadmap locale={locale} />
       </section>
       <section className="build-section">
         <div className="container build-inner" data-reveal>
@@ -463,7 +460,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         </Link>
       </section>
       <section className="final-cta container" data-reveal>
-        <Brand size={46} />
+        <Mascot name="family" className="final-cta-family" />
         <h2>
           {t.finalCta.title1}
           <br />

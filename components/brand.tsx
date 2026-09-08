@@ -35,7 +35,14 @@ export function Status({
   status: string;
   live?: boolean;
 }) {
-  const isLive = live ?? status === "Live";
+  const isLive =
+    live ??
+    (status === "Live" ||
+      status === "Launching" ||
+      status === "En ligne" ||
+      status === "Lancement" ||
+      status === "متاح" ||
+      status === "قيد الإطلاق");
   return (
     <span className={`status ${isLive ? "live" : ""}`}>
       <span />
@@ -51,6 +58,7 @@ const mascotSize: Record<string, { width: number; height: number }> = {
   market: { width: 1743, height: 1200 },
   stays: { width: 1348, height: 1200 },
   jobs: { width: 1382, height: 1200 },
+  family: { width: 1748, height: 818 },
 };
 
 export function Mascot({
@@ -68,7 +76,11 @@ export function Mascot({
       src={`/mascots/${name}.webp`}
       width={size.width}
       height={size.height}
-      alt={`Nexa ${name === "parent" ? "Parent" : name} mascot`}
+      alt={
+        name === "family"
+          ? "Nexa family of product mascots"
+          : `Nexa ${name === "parent" ? "Parent" : name} mascot`
+      }
       className={`mascot ${className}`}
       priority={priority}
       quality={100}

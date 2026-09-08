@@ -8,51 +8,53 @@ import { Journey } from "@/components/journey";
 import { ProductFocus } from "@/components/product-focus";
 import { Roadmap } from "@/components/roadmap";
 import { products, getProduct, STAYS_URL, LINKEDIN_URL } from "@/lib/products";
+import { getBreadcrumbJsonLd } from "@/lib/entity";
+import { getSeoForSlug, toMetadata } from "@/lib/seo";
 const pages: Record<
   string,
   { title: string; eyebrow: string; description: string }
 > = {
   products: {
-    title: "A purpose for every product.",
+    title: "Products built around real everyday needs.",
     eyebrow: "Our products",
     description:
-      "Eight focused experiences. A family of products for the places you go, the things you need and what comes next.",
+      "Nexa brings together specialized digital services across accommodation, mobility, delivery, payments, groceries, commerce and careers. Each product has its own purpose. Together, they form the Nexa ecosystem.",
   },
   ecosystem: {
-    title: "Different experiences. One connected ecosystem.",
+    title: "Different products. One Nexa.",
     eyebrow: "The Nexa ecosystem",
     description:
-      "Every Nexa product has a clear purpose. We’re building the connections that make them more useful together.",
+      "Nexa is building specialized digital services designed to solve different everyday needs while sharing a broader vision. Useful connections where they genuinely improve the experience.",
   },
   "why-nexa": {
-    title: "Everyday life shouldn’t feel fragmented.",
+    title: "Why Nexa?",
     eyebrow: "Why Nexa",
     description:
-      "Focused products, shared foundations and useful connections. A simple idea, built one experience at a time.",
+      "Because everyday digital services can be more focused, more local and better connected.",
   },
   roadmap: {
-    title: "Building what’s next.",
+    title: "Building Nexa one stage at a time.",
     eyebrow: "Our roadmap",
     description:
-      "We begin with a real product, then expand as the technology, operations and ecosystem mature.",
+      "Nexa’s long-term vision is broad. Its execution will be deliberate — products introduced progressively based on readiness, demand and operational capacity.",
   },
   about: {
-    title: "Built close to everyday life.",
+    title: "Building useful technology for everyday life.",
     eyebrow: "About Nexa",
     description:
-      "Nexa is a Moroccan technology company building a connected ecosystem of specialized digital services. We’re starting with accommodation and growing from there.",
+      "Nexa is a Moroccan technology company developing specialized digital products across accommodation, mobility, delivery, payments, groceries, commerce and careers. We are building the ecosystem progressively, beginning with Nexa Stays.",
   },
   careers: {
-    title: "Help write the next chapter.",
+    title: "Build the next chapter of Nexa.",
     eyebrow: "Careers at Nexa",
     description:
-      "Build useful products. Work close to real problems. Help shape an ecosystem from its earliest stages.",
+      "Nexa is being built by people across technology, product, operations, marketing and business. As the company grows, so will the team.",
   },
   partners: {
-    title: "Build the ecosystem with us.",
+    title: "Build with Nexa.",
     eyebrow: "Partnerships",
     description:
-      "We’re interested in working with businesses and people who can help make everyday experiences better across Morocco.",
+      "Nexa is creating an ecosystem that depends on strong relationships with local businesses, operators, technology companies and strategic partners.",
   },
   updates: {
     title: "Follow what we’re building.",
@@ -61,10 +63,10 @@ const pages: Record<
       "A place for product developments and meaningful company progress.",
   },
   contact: {
-    title: "Let’s make a useful connection.",
+    title: "Talk to Nexa.",
     eyebrow: "Contact Nexa",
     description:
-      "Get in touch about Nexa, opportunities to work together or the ecosystem we’re building.",
+      "Whether you are interested in one of our products, a partnership, a career opportunity or the company itself, you can reach the appropriate Nexa team here.",
   },
   privacy: {
     title: "Privacy.",
@@ -104,28 +106,51 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const seo = getSeoForSlug(slug);
+  if (seo) return toMetadata(seo);
   const product = getProduct(slug);
   const page = pages[slug];
-  return {
-    title: product
-      ? `${product.name} — ${product.category}`
-      : (page?.title ?? "Not found"),
-    description: product?.description ?? page?.description,
-    alternates: { canonical: `/${slug}/` },
-    openGraph: {
-      title: product?.name ?? page?.title,
-      description: product?.description ?? page?.description,
-      url: `/${slug}/`,
-    },
-  };
+  if (product) {
+    return toMetadata({
+      title: `${product.name} — ${product.category}`,
+      description: product.description,
+      path: `/${slug}/`,
+    });
+  }
+  if (page) {
+    return toMetadata({
+      title: page.title,
+      description: page.description,
+      path: `/${slug}/`,
+    });
+  }
+  return { title: "Not found" };
 }
-function Bread({ label }: { label: string }) {
+function Bread({
+  label,
+  slug,
+}: {
+  label: string;
+  slug: string;
+}) {
+  const crumbs = [
+    { name: "Nexa", path: "/" },
+    { name: label, path: `/${slug}/` },
+  ];
   return (
-    <div className="breadcrumbs">
-      <Link href="/">Nexa</Link>
-      <span>/</span>
-      <span>{label}</span>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getBreadcrumbJsonLd(crumbs)),
+        }}
+      />
+      <div className="breadcrumbs">
+        <Link href="/">Nexa</Link>
+        <span>/</span>
+        <span>{label}</span>
+      </div>
+    </>
   );
 }
 function ContactLink({ label = "Connect with Nexa" }: { label?: string }) {
@@ -151,7 +176,7 @@ function Directory() {
             </span>
             <Arrow external />
           </div>
-          <Brand product={p.logo ?? p.slug} size={48} />
+          <Brand product={p.logo ?? p.slug} size={64} />
           <h3>{p.name}</h3>
           <p>{p.short}</p>
           <Status status={p.status} />
@@ -171,7 +196,7 @@ export default async function ContentPage({
     return (
       <main id="main" className="container">
         <div style={{ paddingTop: 30 }}>
-          <Bread label={product.name} />
+          <Bread label={product.name} slug={slug} />
         </div>
         <section
           className={`product-hero ${slug}`}
@@ -184,7 +209,7 @@ export default async function ContentPage({
         >
           <div>
             <div className="product-lockup">
-              <Brand product={product.logo ?? product.slug} size={40} />
+              <Brand product={product.logo ?? product.slug} size={56} />
               <span>{product.name}</span>
               <Status status={product.status} />
             </div>
@@ -197,7 +222,7 @@ export default async function ContentPage({
                 rel="noreferrer"
                 className="button dark"
               >
-                Explore Nexa Stays <Arrow external />
+                Find accommodation with Nexa Stays <Arrow external />
               </a>
             ) : (
               <Link href="/roadmap" className="text-link">
@@ -205,14 +230,14 @@ export default async function ContentPage({
               </Link>
             )}
             <Link href="/ecosystem" className="eyebrow">
-              Part of the Nexa ecosystem
+              Learn about the Nexa digital ecosystem
             </Link>
           </div>
           {product.mascot ? (
             <Mascot name={product.mascot} />
           ) : (
             <div className="product-symbol">
-              <Brand product={slug} size={160} />
+              <Brand product={slug} size={200} />
             </div>
           )}
         </section>
@@ -226,8 +251,12 @@ export default async function ContentPage({
               {slug === "cloud"
                 ? "A longer-term vision."
                 : slug === "stays"
-                  ? "A little more clarity. At every step."
-                  : "A clear purpose. A focused experience."}
+                  ? "A better way to find a stay."
+                  : slug === "go"
+                    ? "Three everyday needs. One local service."
+                    : slug === "fresh"
+                      ? "Grocery first. Restaurant food belongs to Go."
+                      : "A clear purpose. A focused experience."}
             </h2>
           </div>
           <ol className="detail-list">
@@ -268,7 +297,7 @@ export default async function ContentPage({
             <div className="related-list">
               {product.connections.map((s) => (
                 <Link key={s} href={`/${s}`}>
-                  <Brand product={s} size={29} />
+                  <Brand product={s} size={38} />
                   {getProduct(s)?.name}
                   <Arrow />
                 </Link>
@@ -280,12 +309,12 @@ export default async function ContentPage({
           <div>
             <h3>
               {slug === "stays"
-                ? "A place for your next chapter."
+                ? "Your next stay starts here."
                 : "See the bigger picture."}
             </h3>
             <p>
               {slug === "stays"
-                ? "Explore accommodation in Morocco."
+                ? "Discover Nexa Stays and follow the launch of our first Nexa experience."
                 : "Discover the products that make up Nexa."}
             </p>
           </div>
@@ -293,7 +322,7 @@ export default async function ContentPage({
             href={slug === "stays" ? STAYS_URL : "/ecosystem"}
             className="button primary"
           >
-            {slug === "stays" ? "Explore Nexa Stays" : "Explore the ecosystem"}
+            {slug === "stays" ? "Find accommodation with Nexa Stays" : "Explore the ecosystem"}
             <Arrow />
           </Link>
         </section>
@@ -310,6 +339,7 @@ export default async function ContentPage({
               ? "Why Nexa"
               : slug[0].toUpperCase() + slug.slice(1)
           }
+          slug={slug}
         />
         <div className="eyebrow">{page.eyebrow}</div>
         <h1>{page.title}</h1>
@@ -320,7 +350,7 @@ export default async function ContentPage({
           <>
             <Directory />
             <section className="subpage-cta">
-              <h3>Independent experiences. A shared direction.</h3>
+              <h3>Specialized by design. Connected with purpose.</h3>
               <Link href="/ecosystem" className="text-link">
                 How Nexa connects <Arrow />
               </Link>
@@ -337,13 +367,15 @@ export default async function ContentPage({
                   Connected by Nexa.
                 </h2>
                 <p>
-                  Stay, move, pay, shop, work and discover. Each product focuses
-                  on one part of everyday life.
+                  A single application can become complicated when every service
+                  is forced into the same interface. Nexa builds specialized
+                  products, then connects them where doing so creates real
+                  value.
                 </p>
                 <p>
-                  Shared foundations can make it easier to move between
-                  experiences as the ecosystem grows. Select a product to
-                  explore its purpose and current status.
+                  Stay. Move, eat and deliver. Pay. Shop for groceries. Shop
+                  online. Find opportunity. Select a product to explore its
+                  purpose and current status.
                 </p>
               </div>
               <Ecosystem />
@@ -362,41 +394,50 @@ export default async function ContentPage({
         {slug === "why-nexa" && (
           <>
             <div className="prose">
-              <h2>Every product has one clear job.</h2>
+              <h2>Focus before scale.</h2>
               <p>
-                A booking platform should help you find a place to stay. A
-                mobility service should help you get there. Good experiences
-                begin with focus.
+                We do not believe in launching every idea at once. Each Nexa
+                product should earn its place by solving a specific problem
+                well. The ecosystem grows only when its products are ready to
+                support it.
+              </p>
+              <h2>Specialized products. Clear boundaries.</h2>
+              <p>
+                Nexa Stays handles accommodation. Nexa Go handles mobility,
+                restaurant food and local delivery. Nexa Fresh handles
+                groceries. Nexa Market handles broader commerce. Nexa Jobs
+                handles employment. Nexa Pay supports transactions.
               </p>
               <p>
-                Nexa brings those focused experiences into one family, with
-                shared infrastructure and a long-term plan for useful
-                connections.
+                Clear boundaries help products remain understandable —
+                integration should solve a problem, not exist because products
+                share a name.
               </p>
-              <h2>Connection should earn its place.</h2>
+              <h2>Connected with purpose.</h2>
               <p>
-                Finding a neighborhood, booking a nearby stay and planning a
-                ride are different tasks within the same trip. That is the kind
-                of connection we want to make easier.
+                A traveler may need transportation and dinner through Nexa Go,
+                groceries through Nexa Fresh, and supported payments through
+                Nexa Pay. Those are useful connections.
               </p>
               <p>
-                The ecosystem is being built in stages. We start with Nexa
-                Stays, learn from real use and expand deliberately.
+                The goal is not to connect everything. The goal is to connect
+                the right things — starting with Nexa Stays and expanding
+                deliberately.
               </p>
             </div>
             <div className="principles">
               {[
                 [
-                  "Useful first",
-                  "Solve a real problem before adding another feature.",
+                  "Focus before scale",
+                  "Solve a real problem before adding another product.",
                 ],
                 [
-                  "Local understanding",
-                  "Build close to the people and businesses using the products.",
+                  "Built around Morocco",
+                  "Local expectations, businesses, cities and trust shape the product.",
                 ],
                 [
                   "Earn trust",
-                  "Make clarity, reliability and transparency part of everyday use.",
+                  "Ambition defines the direction. Execution determines the pace.",
                 ],
               ].map(([title, body], i) => (
                 <div className="principle" key={title}>
@@ -415,27 +456,33 @@ export default async function ContentPage({
           <>
             <Roadmap />
             <section className="prose" style={{ marginTop: 65 }}>
-              <h2>Start with something useful.</h2>
+              <h2>Stage 1 — Nexa Stays</h2>
               <p>
-                Nexa Stays is our first consumer experience. It gives us a
-                focused place to put the principles behind Nexa into practice.
+                Accommodation is the first category. Nexa Stays is the starting
+                point for building the Nexa ecosystem in the market.
               </p>
-              <h2>Build the next connections carefully.</h2>
+              <h2>Stage 2 — Nexa Pay</h2>
               <p>
-                Nexa Pay is in development. Go and Fresh form the next stage of
-                the ecosystem, with mobility, general delivery and groceries
-                serving distinct needs.
+                A transaction layer is an important part of a connected
+                ecosystem. Nexa Pay will be developed progressively, subject to
+                regulatory, technical and partnership requirements.
               </p>
-              <h2>Make progress visible.</h2>
+              <h2>Stage 3 — Nexa Go and Nexa Fresh</h2>
               <p>
-                Market and Jobs broaden the longer-term network. Maps and Cloud
-                remain future directions, with detailed capabilities still to be
-                defined.
+                Nexa Go covers rides, restaurant food delivery and general local
+                delivery. Nexa Fresh is dedicated grocery delivery. Both involve
+                local logistics, but each is designed around a different
+                fulfillment model.
+              </p>
+              <h2>Stage 4 — Nexa Market and Nexa Jobs</h2>
+              <p>
+                As the ecosystem grows, Nexa may expand further into digital
+                commerce and employment. Maps and Cloud remain future directions
+                beyond the current roadmap.
               </p>
               <p>
-                We use product stages instead of announcing uncommitted launch
-                dates. Private beta labels will apply only to experiences
-                available to invited users.
+                This roadmap is a direction, not a promise to launch everything
+                at once. Product scope, sequencing and timing may evolve.
               </p>
             </section>
             <Directory />
@@ -443,7 +490,71 @@ export default async function ContentPage({
         )}
         {slug === "about" && (
           <>
-            <div className="morocco-section" style={{ paddingTop: 0 }}>
+            <section className="nexa-glance">
+              <div className="eyebrow">NEXA AT A GLANCE</div>
+              <h2>Company facts</h2>
+              <dl>
+                <div>
+                  <dt>Company</dt>
+                  <dd>Nexa</dd>
+                </div>
+                <div>
+                  <dt>Type</dt>
+                  <dd>Technology company</dd>
+                </div>
+                <div>
+                  <dt>Origin</dt>
+                  <dd>Morocco</dd>
+                </div>
+                <div>
+                  <dt>Primary market</dt>
+                  <dd>Morocco</dd>
+                </div>
+                <div>
+                  <dt>Long-term market</dt>
+                  <dd>North Africa</dd>
+                </div>
+                <div>
+                  <dt>First product</dt>
+                  <dd>Nexa Stays</dd>
+                </div>
+                <div>
+                  <dt>Ecosystem</dt>
+                  <dd>
+                    Nexa Stays, Nexa Go, Nexa Pay, Nexa Fresh, Nexa Market and
+                    Nexa Jobs
+                  </dd>
+                </div>
+                <div>
+                  <dt>Official website</dt>
+                  <dd>
+                    <a href="https://nexa.ma">nexa.ma</a>
+                  </dd>
+                </div>
+                <div>
+                  <dt>LinkedIn</dt>
+                  <dd>
+                    <a
+                      href={LINKEDIN_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Nexa on LinkedIn
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+              <p className="entity-definition" style={{ marginTop: 28 }}>
+                Nexa is a Moroccan technology company building a connected
+                ecosystem of specialized digital services for everyday life. The
+                ecosystem includes Nexa Stays for accommodation, Nexa Go for
+                rides, restaurant food delivery and local delivery, Nexa Pay for
+                payments, Nexa Fresh for groceries, Nexa Market for commerce and
+                Nexa Jobs for employment. Nexa is built in Morocco with a
+                long-term ambition to expand across North Africa.
+              </p>
+            </section>
+            <div className="morocco-section" style={{ paddingTop: 40 }}>
               <div className="morocco-photo">
                 <Image
                   src="/photos/marrakech.webp"
@@ -457,16 +568,19 @@ export default async function ContentPage({
                 <p>
                   Morocco is our starting point. Building here means staying
                   close to the people, businesses and everyday behaviors we aim
-                  to serve.
+                  to serve — customer expectations, payment behavior, city
+                  infrastructure, language, culture and regulation.
                 </p>
                 <p>
-                  Our mission is to make everyday digital life simpler and more
-                  connected. We begin with accommodation, then expand into
-                  complementary services as the ecosystem develops.
+                  Our mission is to make everyday digital services simpler, more
+                  structured and better connected. Users should not have to
+                  choose between specialized products and a connected
+                  experience.
                 </p>
                 <p>
-                  Our long-term ambition reaches across North Africa. The work
-                  starts with useful products, one step at a time.
+                  Our long-term ambition extends beyond Morocco, with North
+                  Africa representing a natural future opportunity. Regional
+                  expansion must come after strong execution at home.
                 </p>
               </div>
             </div>
@@ -564,19 +678,20 @@ export default async function ContentPage({
             <div className="prose">
               <h2>Useful connections start with people.</h2>
               <p>
-                Nexa is building a portfolio of everyday services, starting with
-                accommodation. We welcome conversations with businesses that
-                understand their communities and want to help shape what comes
-                next.
+                Nexa will grow through collaboration with customers, hosts,
+                merchants, restaurants, operators, employers, technology
+                providers and other partners. If your organization can help
+                improve one of the experiences we are building, we want to hear
+                from you.
               </p>
             </div>
             <div className="company-links">
               <div className="company-link">
-                <Brand product="stays" size={40} />
+                <Brand product="stays" size={56} />
                 <h3>Hosts & accommodation</h3>
                 <p>
-                  Explore the live Nexa Stays experience and opportunities to
-                  present your property.
+                  Explore the Nexa Stays experience and opportunities to present
+                  your property.
                 </p>
                 <a
                   href={STAYS_URL}
@@ -588,7 +703,7 @@ export default async function ContentPage({
                 </a>
               </div>
               <div className="company-link">
-                <Brand size={40} />
+                <Brand size={56} />
                 <h3>Ecosystem partnerships</h3>
                 <p>
                   Local commerce, operations and technology. Talk to us about
@@ -604,14 +719,15 @@ export default async function ContentPage({
         {slug === "updates" && (
           <>
             <article className="update-article">
-              <Brand product="stays" size={80} />
+              <Brand product="stays" size={104} />
               <div>
-                <Status status="Live" />
+                <Status status="Launching" live />
                 <h2>Nexa starts with Stays.</h2>
                 <p>
-                  Our first consumer experience is accommodation in Morocco.
+                  Our first market-facing product is accommodation in Morocco.
                   Nexa Stays is the starting point for a wider family of focused
-                  digital services.
+                  digital services — Go for rides, food and local delivery,
+                  Fresh for groceries, and more as the roadmap progresses.
                 </p>
                 <a
                   href={STAYS_URL}

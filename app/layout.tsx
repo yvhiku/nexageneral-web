@@ -9,37 +9,37 @@ import "@fontsource/manrope/700.css";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { homeSeo, toMetadata } from "@/lib/seo";
+
+const enHome = toMetadata(homeSeo.en);
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://nexa.ma"),
+  ...enHome,
   title: {
-    default: "Nexa — One ecosystem for everyday life",
+    default: homeSeo.en.title,
+    absolute: homeSeo.en.title,
     template: "%s | Nexa",
   },
-  alternates: { canonical: "/" },
-  description:
-    "A connected ecosystem built in Morocco. Discover Nexa Stays and our growing family of services for mobility, payments, groceries, commerce, jobs and local discovery.",
   icons: { icon: "/brand/nexa.webp" },
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "Nexa",
-    title: "Nexa — One ecosystem for everyday life",
-    description:
-      "Specialized digital services. Built in Morocco. Starting with Nexa Stays.",
+    ...enHome.openGraph,
     images: [
       {
         url: "/og/default.png",
         width: 1200,
         height: 630,
-        alt: "Nexa — One ecosystem for everyday life",
+        alt: homeSeo.en.title,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nexa — One ecosystem for everyday life",
-    description:
-      "Specialized digital services. Built in Morocco. Starting with Nexa Stays.",
+    title: homeSeo.en.title,
+    description: homeSeo.en.description,
     images: ["/og/default.png"],
   },
 };

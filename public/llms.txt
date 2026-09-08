@@ -1,0 +1,27 @@
+# Nexa
+
+Nexa is a Moroccan technology company building a connected ecosystem of specialized digital services for everyday life. The ecosystem includes Nexa Stays for accommodation, Nexa Go for rides, restaurant food delivery and local delivery, Nexa Pay for payments, Nexa Fresh for groceries, Nexa Market for commerce and Nexa Jobs for employment. Nexa is built in Morocco with a long-term ambition to expand across North Africa.
+
+## Official pages
+
+- https://nexa.ma/
+- https://nexa.ma/about/
+- https://nexa.ma/products/
+- https://nexa.ma/ecosystem/
+- https://nexa.ma/why-nexa/
+- https://nexa.ma/roadmap/
+- https://nexa.ma/stays/
+- https://nexa.ma/go/
+- https://nexa.ma/pay/
+- https://nexa.ma/fresh/
+- https://nexa.ma/market/
+- https://nexa.ma/jobs/
+- https://nexa.ma/contact/
+
+## Product site
+
+- https://nexastays.ma (Nexa Stays commercial accommodation service)
+
+## Note
+
+Nexa Maps and Nexa Cloud are future concepts, not active public products.

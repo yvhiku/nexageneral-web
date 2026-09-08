@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
 import { DocumentLocale } from "@/components/document-locale";
 import { HomePage } from "@/components/home-page";
+import { homeSeo, toMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Nexa — Un écosystème pour le quotidien",
-  description:
-    "Un écosystème connecté conçu au Maroc. Découvrez Nexa Stays et notre famille grandissante de services.",
-  alternates: { canonical: "/fr/" },
+  ...toMetadata(homeSeo.fr),
   openGraph: {
+    ...toMetadata(homeSeo.fr).openGraph,
     locale: "fr_FR",
-    title: "Nexa — Un écosystème pour le quotidien",
-    description:
-      "Services numériques spécialisés. Conçu au Maroc. On commence avec Nexa Stays.",
   },
 };
 

@@ -6,30 +6,90 @@ import {
   BriefcaseBusiness,
   UserRound,
   Smartphone,
+  UtensilsCrossed,
 } from "lucide-react";
+import Link from "next/link";
+import { Arrow } from "@/components/brand";
+
 export function ProductFocus({ slug }: { slug: string }) {
   if (slug === "go")
     return (
-      <section className="mobility-focus">
-        <div>
-          <CarFront size={32} strokeWidth={1.4} />
-          <span className="eyebrow">FOR THE PLACES YOU GO</span>
-          <h2>A ride across town.</h2>
-          <p>
-            From everyday plans to somewhere new. A focused ride experience,
-            from pickup to arrival.
-          </p>
-        </div>
-        <div>
-          <Package size={32} strokeWidth={1.4} />
-          <span className="eyebrow">FOR THE THINGS YOU SEND</span>
-          <h2>A delivery across the neighborhood.</h2>
-          <p>
-            Documents, packages and everyday items. General local delivery
-            belongs to Go; groceries belong to Fresh.
-          </p>
-        </div>
-      </section>
+      <>
+        <section className="mobility-focus mobility-focus-three">
+          <div>
+            <CarFront size={32} strokeWidth={1.4} />
+            <span className="eyebrow">LOCAL RIDES WITH NEXA GO</span>
+            <h2>Local rides when you need them.</h2>
+            <p>
+              Request local transportation and move around supported cities
+              through Nexa Go.
+            </p>
+          </div>
+          <div>
+            <UtensilsCrossed size={32} strokeWidth={1.4} />
+            <span className="eyebrow">RESTAURANT FOOD DELIVERY</span>
+            <h2>Your local restaurants, delivered.</h2>
+            <p>
+              Discover participating restaurants and order prepared meals for
+              local delivery.
+            </p>
+          </div>
+          <div>
+            <Package size={32} strokeWidth={1.4} />
+            <span className="eyebrow">GENERAL LOCAL DELIVERY</span>
+            <h2>Send it locally.</h2>
+            <p>
+              Documents, parcels, retail purchases and everyday personal
+              deliveries across your city.
+            </p>
+          </div>
+        </section>
+        <section className="product-details go-disambiguation">
+          <div>
+            <div className="eyebrow">NEXA GO VS NEXA FRESH</div>
+            <h2 style={{ marginTop: 18 }}>
+              Different delivery needs. Different products.
+            </h2>
+          </div>
+          <div className="prose" style={{ maxWidth: 720 }}>
+            <p>
+              Nexa Go handles rides, restaurant food and general local delivery.
+              Nexa Fresh is dedicated specifically to groceries and everyday
+              grocery essentials.
+            </p>
+            <p>
+              Keeping the services separate allows each product to be optimized
+              for its own category.
+            </p>
+            <Link href="/fresh" className="text-link">
+              Discover Nexa Fresh groceries <Arrow />
+            </Link>
+          </div>
+        </section>
+        <section className="product-details">
+          <div>
+            <div className="eyebrow">HOW NEXA GO CONNECTS</div>
+            <h2 style={{ marginTop: 18 }}>
+              Part of the Nexa ecosystem.
+            </h2>
+          </div>
+          <div className="prose" style={{ maxWidth: 720 }}>
+            <p>
+              A Nexa Stays guest could use Go for transportation and restaurant
+              orders. A Nexa Market customer could potentially use Go for
+              selected local deliveries. Nexa Pay may eventually support
+              compatible transactions across the service.
+            </p>
+            <p>
+              These connections will be introduced progressively as the products
+              become available.
+            </p>
+            <Link href="/ecosystem" className="text-link">
+              Learn about the Nexa digital ecosystem <Arrow />
+            </Link>
+          </div>
+        </section>
+      </>
     );
   if (slug === "fresh")
     return (
@@ -45,19 +105,20 @@ export function ProductFocus({ slug }: { slug: string }) {
         <div>
           <div className="eyebrow">GROCERIES. THAT’S OUR FOCUS.</div>
           <h2>
-            Milk for the morning.
-            <br />A little time for yourself.
+            Everyday groceries,
+            <br />
+            delivered faster.
           </h2>
           <p>
-            Fresh is dedicated to groceries and everyday essentials. The
-            under-15-minute target applies only where local operations can
-            support it.
+            Nexa Fresh is dedicated to groceries and household essentials —
+            not restaurant meals. The under-15-minute target applies only where
+            local operations can support it.
           </p>
           <div className="grocery-list">
             <span>Fruit & vegetables</span>
-            <span>Bread & bakery</span>
-            <span>Milk & dairy</span>
-            <span>Everyday essentials</span>
+            <span>Dairy & drinks</span>
+            <span>Pantry essentials</span>
+            <span>Household & personal care</span>
           </div>
         </div>
       </section>
@@ -68,31 +129,33 @@ export function ProductFocus({ slug }: { slug: string }) {
         <div>
           <Smartphone size={35} strokeWidth={1.3} />
           <h2>
-            Everyday transactions.
-            <br />A considered approach.
+            Payments designed
+            <br />
+            to connect the ecosystem.
           </h2>
           <p>
-            Features and availability will be introduced in phases. Nexa Pay is
-            currently in development.
+            Capabilities will be developed progressively, subject to regulatory,
+            operational and technical requirements. Nexa Pay is on the
+            development roadmap.
           </p>
         </div>
         <ol>
           <li>
             <span>01</span>
-            <strong>Send</strong>
-            <p>Person-to-person transfers.</p>
+            <strong>Checkout</strong>
+            <p>Pay for supported Nexa services.</p>
             <ArrowRight size={20} />
           </li>
           <li>
             <span>02</span>
-            <strong>Pay</strong>
-            <p>QR and merchant transactions.</p>
+            <strong>Merchants</strong>
+            <p>Selected partner digital payments.</p>
             <ArrowRight size={20} />
           </li>
           <li>
             <span>03</span>
-            <strong>Connect</strong>
-            <p>Checkout across supported Nexa products.</p>
+            <strong>QR & connect</strong>
+            <p>Simpler flows across compatible products.</p>
             <ArrowRight size={20} />
           </li>
         </ol>
@@ -106,40 +169,40 @@ export function ProductFocus({ slug }: { slug: string }) {
       >
         <h2>
           {jobs
-            ? "Opportunity works both ways."
-            : "A marketplace has two sides."}
+            ? "Find opportunity. Find talent."
+            : "Built for buyers and merchants."}
         </h2>
         <div>
           <article>
             {jobs ? <UserRound size={30} /> : <ShoppingBag size={30} />}
             <span className="eyebrow">
-              {jobs ? "FOR CANDIDATES" : "FOR SHOPPERS"}
+              {jobs ? "FOR CANDIDATES" : "FOR BUYERS"}
             </span>
             <h3>
               {jobs
-                ? "Find a role that fits."
-                : "Find your next good discovery."}
+                ? "Discover relevant opportunities."
+                : "Explore products with clarity."}
             </h3>
             <p>
               {jobs
-                ? "Explore work opportunities, build your profile and keep track of applications."
-                : "Discover products, compare options and get to know the people behind what you buy."}
+                ? "Job listings, candidate profiles, application tracking and employer information."
+                : "Structured categories, clearer merchant information and a consistent purchasing experience."}
             </p>
           </article>
           <article>
             {jobs ? <BriefcaseBusiness size={30} /> : <Package size={30} />}
             <span className="eyebrow">
-              {jobs ? "FOR EMPLOYERS" : "FOR SELLERS"}
+              {jobs ? "FOR EMPLOYERS" : "FOR MERCHANTS"}
             </span>
             <h3>
               {jobs
-                ? "Find the people you need."
-                : "Bring your business online."}
+                ? "Reach suitable candidates."
+                : "An additional digital channel."}
             </h3>
             <p>
               {jobs
-                ? "Publish roles, review candidates and organize recruitment in one focused experience."
-                : "Present your products and connect with buyers through a structured marketplace."}
+                ? "Employer profiles, vacancy publishing, candidate discovery and recruitment tools."
+                : "Product listings, storefront profiles, order management and selected delivery integrations."}
             </p>
           </article>
         </div>
