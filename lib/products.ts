@@ -148,7 +148,7 @@ export const products: Product[] = [
     category: "Local discovery",
     color: "#3c616b",
     tint: "#eff4f4",
-    status: "Coming soon",
+    status: "Future",
     headline: "There’s more around you.",
     short: "Get to know what’s nearby.",
     description:

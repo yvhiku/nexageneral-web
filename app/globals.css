@@ -255,6 +255,35 @@ svg {
 .desktop-nav a:hover {
   color: var(--blue);
 }
+.nav-end {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-inline-start: auto;
+}
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.lang-switch a {
+  padding: 6px 8px;
+  color: #6a7884;
+  border-radius: 4px;
+}
+.lang-switch a:hover,
+.lang-switch a.active {
+  color: var(--ink);
+  background: #eef3f8;
+}
+.lang-switch.mobile-lang {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eff1f4;
+  gap: 8px;
+}
 .nav-cta {
   display: flex;
   align-items: center;
@@ -285,17 +314,17 @@ svg {
 }
 .hero {
   position: relative;
-  min-height: 690px;
+  min-height: min(640px, calc(100dvh - 88px));
   display: grid;
   grid-template-columns: 1.22fr 1fr;
   align-items: center;
-  padding-top: 50px;
-  padding-bottom: 110px;
+  padding-top: 36px;
+  padding-bottom: 72px;
   gap: 20px;
 }
 .hero .eyebrow {
   color: #536c80;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
   display: flex;
   align-items: center;
   gap: 9px;
@@ -311,9 +340,9 @@ svg {
   z-index: 2;
 }
 .hero-copy p {
-  margin: 27px 0 29px;
-  font-size: 1.075rem;
-  line-height: 1.75;
+  margin: 20px 0 24px;
+  font-size: 1.05rem;
+  line-height: 1.7;
   max-width: 530px;
 }
 .hero-note {
@@ -322,7 +351,7 @@ svg {
   gap: 8px;
   color: #78828a;
   font-size: 0.77rem;
-  margin-top: 28px;
+  margin-top: 22px;
 }
 .hero-art {
   position: relative;
@@ -569,6 +598,12 @@ svg {
 .fresh-story {
   background: #edf5e7;
 }
+.market-story {
+  background: #f4edfc;
+}
+.jobs-story {
+  background: #f0f0ef;
+}
 .product-story .small-story-copy {
   position: relative;
   z-index: 1;
@@ -595,6 +630,15 @@ svg {
 .fresh-story > .mascot {
   width: 255px;
   height: 290px;
+}
+.market-story > .mascot {
+  width: 280px;
+  height: 300px;
+  right: -4px;
+}
+.jobs-story > .mascot {
+  width: 265px;
+  height: 295px;
 }
 .small-story-copy .text-link {
   font-size: 0.86rem;
@@ -647,41 +691,6 @@ svg {
   color: #a6b6d2;
   margin-top: 20px;
 }
-.commerce-stories {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  margin: 55px 0 40px;
-}
-.commerce-art {
-  height: 320px;
-  border-radius: 8px;
-  background: #f4effa;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  margin-bottom: 25px;
-  overflow: hidden;
-}
-.jobs .commerce-art {
-  background: #f2f2f0;
-}
-.commerce-art .mascot {
-  height: 290px;
-  width: 100%;
-  object-fit: contain;
-  padding: 15px;
-}
-.commerce-story h3 {
-  margin: 20px 0 11px;
-  font-size: 1.6rem;
-}
-.commerce-story p {
-  font-size: 0.92rem;
-  max-width: 510px;
-  line-height: 1.7;
-  margin-bottom: 16px;
-}
 .horizon-products {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -707,6 +716,23 @@ svg {
 }
 .horizon-products > a > svg:last-child {
   width: 15px;
+}
+.horizon-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 28px 8px;
+  border-block: 1px solid var(--line);
+  margin-top: 8px;
+}
+.horizon-collapsed h3 {
+  font-size: 1.15rem;
+  margin: 6px 0 8px;
+}
+.horizon-collapsed p {
+  font-size: 0.92rem;
+  max-width: 480px;
 }
 .connection-section {
   background: #f6f8fa;
@@ -879,14 +905,16 @@ svg {
   background: #fff4f6;
   border-radius: 8px;
   display: grid;
-  grid-template-columns: 0.6fr 1.5fr 0.7fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 0.7fr);
   align-items: center;
   padding: 25px 40px;
   gap: 35px;
 }
 .proof-section > .mascot {
-  width: 190px;
-  height: 235px;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  justify-self: center;
   object-fit: contain;
 }
 .proof-section h2 {
@@ -1729,25 +1757,6 @@ svg {
   .pay-story p {
     font-size: 0.87rem;
   }
-  .commerce-stories {
-    gap: 25px;
-    margin-top: 40px;
-  }
-  .commerce-art {
-    height: 280px;
-  }
-  .commerce-art .mascot {
-    height: 260px;
-  }
-  .commerce-story .product-lockup .status {
-    margin-left: 0;
-  }
-  .commerce-story h3 {
-    font-size: 1.4rem;
-  }
-  .commerce-story p {
-    font-size: 0.85rem;
-  }
   .horizon-products {
     grid-template-columns: 1fr;
   }
@@ -1814,13 +1823,9 @@ svg {
     font-size: 0.75rem;
   }
   .proof-section {
-    grid-template-columns: 0.6fr 1.4fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
     gap: 20px;
     padding: 28px;
-  }
-  .proof-section > .mascot {
-    width: 150px;
-    height: 230px;
   }
   .proof-aside {
     display: none;
@@ -2127,25 +2132,6 @@ svg {
     margin-left: 0;
     font-size: 0.75rem;
   }
-  .commerce-stories {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  .commerce-art {
-    height: 330px;
-  }
-  .commerce-art .mascot {
-    height: 310px;
-  }
-  .commerce-story .product-lockup .status {
-    margin-left: auto;
-  }
-  .commerce-story h3 {
-    font-size: 1.55rem;
-  }
-  .commerce-story p {
-    font-size: 0.92rem;
-  }
   .horizon-products > a {
     gap: 13px;
   }
@@ -2235,11 +2221,6 @@ svg {
     grid-template-columns: 1fr;
     padding: 28px;
     gap: 14px;
-  }
-  .proof-section > .mascot {
-    height: 190px;
-    width: 155px;
-    justify-self: center;
   }
   .proof-section h2 {
     font-size: 2rem;
@@ -2687,7 +2668,6 @@ svg {
 .story-copy p,
 .small-story-copy p,
 .pay-story p,
-.commerce-story p,
 .connection-grid p,
 .journey-panel p,
 .proof-section p,
@@ -2706,7 +2686,9 @@ svg {
   min-height: 0;
 }
 .product-story > .mascot,
-.fresh-story > .mascot {
+.fresh-story > .mascot,
+.market-story > .mascot,
+.jobs-story > .mascot {
   position: static;
   align-self: flex-end;
   width: 250px;
@@ -2733,9 +2715,6 @@ svg {
     margin-left: 0;
   }
   .product-story .product-lockup .status {
-    margin-left: 0;
-  }
-  .commerce-story .product-lockup .status {
     margin-left: 0;
   }
   .network-node {
@@ -2768,19 +2747,99 @@ svg {
   .roadmap-stage small {
     font-size: 0.75rem;
   }
-  .proof-section > .mascot {
-    height: 210px;
-  }
 }
+/* Give the wider Market and Jobs poses room without cropping their props. */
+.market-story > .mascot,
+.jobs-story > .mascot {
+  align-self: center;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: 24px 0 0;
+}
+
 /* Market's supplied illustration uses a clean white backdrop. */
 .product-hero.market {
   background: #fff;
   border: 1px solid #e8e0ef;
 }
-.market .commerce-art {
-  background: #fff;
-  border: 1px solid #e8e0ef;
-}
 .hero-art {
   border-radius: 10px;
+}
+
+html[lang="ar"] body {
+  font-family:
+    "Segoe UI",
+    "Tahoma",
+    "Arial",
+    "Noto Naskh Arabic",
+    "Noto Sans Arabic",
+    var(--body),
+    sans-serif;
+}
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] .wordmark {
+  font-family:
+    "Segoe UI",
+    "Tahoma",
+    "Arial",
+    "Noto Naskh Arabic",
+    "Noto Sans Arabic",
+    var(--display),
+    sans-serif;
+  letter-spacing: -0.02em;
+}
+
+[dir="rtl"] .wordmark-dot {
+  margin-left: 0;
+  margin-right: -8px;
+}
+[dir="rtl"] .desktop-nav {
+  margin: auto;
+}
+[dir="rtl"] .nav-end {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+[dir="rtl"] .hero {
+  direction: rtl;
+}
+[dir="rtl"] .button-row {
+  flex-direction: row;
+}
+[dir="rtl"] .section-heading {
+  flex-direction: row;
+}
+[dir="rtl"] .horizon-collapsed {
+  flex-direction: row;
+}
+[dir="rtl"] .scroll-cue {
+  left: auto;
+  right: 0;
+}
+[dir="rtl"] .hero-signature {
+  left: auto;
+  right: -15px;
+  transform: rotate(4deg);
+}
+[dir="rtl"] .hero-art-caption {
+  right: auto;
+  left: 40px;
+  transform: rotate(-7deg);
+}
+[dir="rtl"] .geography {
+  flex-direction: row;
+}
+
+@media (max-width: 900px) {
+  .nav-end .nav-cta {
+    display: none;
+  }
+  .horizon-collapsed {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
 }

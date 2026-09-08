@@ -1,17 +1,31 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Brand } from "./brand";
 import { STAYS_URL } from "@/lib/products";
-const links = [
-  ["Products", "/products"],
-  ["Ecosystem", "/ecosystem"],
-  ["Why Nexa", "/why-nexa"],
-  ["Roadmap", "/roadmap"],
-  ["About", "/about"],
-];
+import {
+  detectLocale,
+  getDictionary,
+  localeHome,
+  localeMeta,
+  locales,
+  type Locale,
+} from "@/lib/i18n";
+
 export function Navigation() {
+  const pathname = usePathname();
+  const locale = detectLocale(pathname);
+  const t = getDictionary(locale).nav;
+  const home = localeHome[locale];
+  const links: [string, string][] = [
+    [t.products, "/products"],
+    [t.ecosystem, "/ecosystem"],
+    [t.whyNexa, "/why-nexa"],
+    [t.roadmap, "/roadmap"],
+    [t.about, "/about"],
+  ];
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -28,29 +42,44 @@ export function Navigation() {
   return (
     <header className="site-header">
       <div className="nav-wrap">
-        <Link href="/" aria-label="Nexa home" className="wordmark">
+        <Link href={home} aria-label={t.homeAria} className="wordmark">
           <Brand product="black" size={31} />
           nexa<span className="wordmark-dot">.</span>
         </Link>
-        <nav aria-label="Main navigation" className="desktop-nav">
+        <nav aria-label={t.mainNav} className="desktop-nav">
           {links.map(([label, url]) => (
             <Link href={url} key={url}>
               {label}
             </Link>
           ))}
         </nav>
-        <a
-          className="nav-cta"
-          href={STAYS_URL}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Explore Nexa Stays <ArrowUpRight size={17} />
-        </a>
+        <div className="nav-end">
+          <nav className="lang-switch" aria-label={t.language}>
+            {locales.map((code: Locale) => (
+              <Link
+                key={code}
+                href={localeHome[code]}
+                hrefLang={localeMeta[code].htmlLang}
+                className={code === locale ? "active" : undefined}
+                aria-current={code === locale ? "page" : undefined}
+              >
+                {localeMeta[code].label}
+              </Link>
+            ))}
+          </nav>
+          <a
+            className="nav-cta"
+            href={STAYS_URL}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t.exploreStays} <ArrowUpRight size={17} />
+          </a>
+        </div>
         <button
           ref={toggle}
           className="menu-toggle"
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? t.closeMenu : t.openMenu}
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen(!open)}
@@ -59,12 +88,8 @@ export function Navigation() {
         </button>
       </div>
       {open && (
-        <nav
-          id="mobile-nav"
-          aria-label="Mobile navigation"
-          className="mobile-nav"
-        >
-          {[...links, ["Careers", "/careers"], ["Contact", "/contact"]].map(
+        <nav id="mobile-nav" aria-label={t.mobileNav} className="mobile-nav">
+          {[...links, [t.careers, "/careers"], [t.contact, "/contact"]].map(
             ([label, url]) => (
               <Link onClick={() => setOpen(false)} key={url} href={url}>
                 {label}
@@ -72,8 +97,20 @@ export function Navigation() {
               </Link>
             ),
           )}
+          <div className="lang-switch mobile-lang">
+            {locales.map((code: Locale) => (
+              <Link
+                key={code}
+                href={localeHome[code]}
+                onClick={() => setOpen(false)}
+                className={code === locale ? "active" : undefined}
+              >
+                {localeMeta[code].label}
+              </Link>
+            ))}
+          </div>
           <a href={STAYS_URL} target="_blank" rel="noreferrer">
-            Explore Nexa Stays <ArrowUpRight size={17} />
+            {t.exploreStays} <ArrowUpRight size={17} />
           </a>
         </nav>
       )}

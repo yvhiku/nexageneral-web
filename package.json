@@ -8,6 +8,7 @@
     "start": "serve out --listen 3100",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
+    "og": "node scripts/generate-og.mjs",
     "format": "prettier --write app components lib scripts next.config.ts tsconfig.json eslint.config.mjs"
   },
   "dependencies": {

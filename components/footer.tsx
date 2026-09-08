@@ -1,24 +1,33 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Brand, Arrow } from "./brand";
 import { products, LINKEDIN_URL } from "@/lib/products";
+import { detectLocale, getDictionary, localeHome } from "@/lib/i18n";
+
 export function Footer() {
+  const pathname = usePathname();
+  const locale = detectLocale(pathname);
+  const t = getDictionary(locale).footer;
+  const home = localeHome[locale];
+  const tagline = t.tagline.split("\n");
   return (
     <footer className="footer">
       <div className="container footer-top">
         <div className="footer-intro">
-          <Link href="/" className="wordmark">
+          <Link href={home} className="wordmark">
             <Brand product="white" size={38} />
             nexa.
           </Link>
           <p>
-            One ecosystem
+            {tagline[0]}
             <br />
-            for everyday life.
+            {tagline[1]}
           </p>
-          <span>Built in Morocco.</span>
+          <span>{t.builtIn}</span>
         </div>
         <div>
-          <h3>Our products</h3>
+          <h3>{t.products}</h3>
           {products.map((p) => (
             <Link key={p.slug} href={`/${p.slug}`}>
               {p.name}
@@ -26,37 +35,39 @@ export function Footer() {
           ))}
         </div>
         <div>
-          <h3>Company</h3>
-          {[
-            ["About", "about"],
-            ["Why Nexa", "why-nexa"],
-            ["Roadmap", "roadmap"],
-            ["Careers", "careers"],
-            ["Updates", "updates"],
-          ].map(([n, s]) => (
+          <h3>{t.company}</h3>
+          {(
+            [
+              [t.about, "about"],
+              [t.whyNexa, "why-nexa"],
+              [t.roadmap, "roadmap"],
+              [t.careers, "careers"],
+              [t.updates, "updates"],
+            ] as const
+          ).map(([n, s]) => (
             <Link href={`/${s}`} key={s}>
               {n}
             </Link>
           ))}
         </div>
         <div>
-          <h3>Let’s connect</h3>
-          <Link href="/partners">Partnerships</Link>
-          <Link href="/contact">Contact</Link>
+          <h3>{t.connect}</h3>
+          <Link href="/partners">{t.partnerships}</Link>
+          <Link href="/contact">{t.contact}</Link>
           <a href={LINKEDIN_URL} target="_blank" rel="noreferrer">
-            LinkedIn <Arrow external />
+            {t.linkedin} <Arrow external />
           </a>
         </div>
       </div>
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} Nexa</span>
         <div>
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/terms">Terms</Link>
-          <Link href="/cookies">Cookies</Link>
-          <Link href="/credits">Image credits</Link>
+          <Link href="/privacy">{t.privacy}</Link>
+          <Link href="/terms">{t.terms}</Link>
+          <Link href="/cookies">{t.cookies}</Link>
+          <Link href="/credits">{t.credits}</Link>
         </div>
-        <span>Morocco first. More to come.</span>
+        <span>{t.moroccoFirst}</span>
       </div>
     </footer>
   );

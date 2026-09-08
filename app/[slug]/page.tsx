@@ -428,9 +428,9 @@ export default async function ContentPage({
               </p>
               <h2>Make progress visible.</h2>
               <p>
-                Market, Jobs and Maps broaden the longer-term network. Cloud
-                remains a future direction, with detailed capabilities still to
-                be defined.
+                Market and Jobs broaden the longer-term network. Maps and Cloud
+                remain future directions, with detailed capabilities still to be
+                defined.
               </p>
               <p>
                 We use product stages instead of announcing uncommitted launch

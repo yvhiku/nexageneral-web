@@ -28,14 +28,31 @@ export function Arrow({ external = false }: { external?: boolean }) {
     <ArrowRight size={19} strokeWidth={1.6} />
   );
 }
-export function Status({ status }: { status: string }) {
+export function Status({
+  status,
+  live,
+}: {
+  status: string;
+  live?: boolean;
+}) {
+  const isLive = live ?? status === "Live";
   return (
-    <span className={`status ${status === "Live" ? "live" : ""}`}>
+    <span className={`status ${isLive ? "live" : ""}`}>
       <span />
       {status}
     </span>
   );
 }
+const mascotSize: Record<string, { width: number; height: number }> = {
+  parent: { width: 900, height: 900 },
+  go: { width: 937, height: 1000 },
+  fresh: { width: 882, height: 1000 },
+  pay: { width: 1076, height: 1200 },
+  market: { width: 1743, height: 1200 },
+  stays: { width: 1348, height: 1200 },
+  jobs: { width: 1382, height: 1200 },
+};
+
 export function Mascot({
   name,
   className = "",
@@ -45,14 +62,16 @@ export function Mascot({
   className?: string;
   priority?: boolean;
 }) {
+  const size = mascotSize[name] ?? { width: 1000, height: 1000 };
   return (
     <Image
       src={`/mascots/${name}.webp`}
-      width={800}
-      height={900}
+      width={size.width}
+      height={size.height}
       alt={`Nexa ${name === "parent" ? "Parent" : name} mascot`}
       className={`mascot ${className}`}
       priority={priority}
+      quality={100}
     />
   );
 }

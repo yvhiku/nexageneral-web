@@ -6,9 +6,9 @@ const stages = [
   {
     label: "Expanding",
     status: "Coming soon",
-    items: ["Market", "Jobs", "Maps"],
+    items: ["Market", "Jobs"],
   },
-  { label: "Long term", status: "Future", items: ["Cloud"] },
+  { label: "Long term", status: "Future", items: ["Maps", "Cloud"] },
 ];
 export function Roadmap() {
   return (

@@ -26,8 +26,22 @@ export const metadata: Metadata = {
     title: "Nexa — One ecosystem for everyday life",
     description:
       "Specialized digital services. Built in Morocco. Starting with Nexa Stays.",
+    images: [
+      {
+        url: "/og/default.png",
+        width: 1200,
+        height: 630,
+        alt: "Nexa — One ecosystem for everyday life",
+      },
+    ],
   },
-  twitter: { card: "summary" },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nexa — One ecosystem for everyday life",
+    description:
+      "Specialized digital services. Built in Morocco. Starting with Nexa Stays.",
+    images: ["/og/default.png"],
+  },
 };
 export default function RootLayout({
   children,
