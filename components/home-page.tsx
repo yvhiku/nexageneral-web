@@ -11,6 +11,7 @@ import { getHomeJsonLdGraph } from "@/lib/entity";
 import {
   type Locale,
   getDictionary,
+  localePath,
   translateStatus,
 } from "@/lib/i18n";
 
@@ -20,6 +21,7 @@ const homeDirectory = products.filter(
 
 export function HomePage({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
+  const lp = (href: string) => localePath(locale, href);
 
   return (
     <main id="main">
@@ -117,7 +119,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="product-directory">
             {homeDirectory.map((p, i) => (
               <Link
-                href={`/${p.slug}`}
+                href={lp(`/${p.slug}`)}
                 key={p.slug}
                 className="directory-item"
                 style={{ "--product-color": p.color } as React.CSSProperties}
@@ -181,7 +183,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             >
               {t.stories.staysCta} <Arrow external />
             </a>
-            <Link href="/stays" className="text-link secondary-link">
+            <Link href={lp("/stays")} className="text-link secondary-link">
               {t.stories.staysMeet} <Arrow />
             </Link>
             <span className="story-footnote">{t.stories.staysFootnote}</span>
@@ -216,7 +218,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                 {t.stories.goTitle2}
               </h2>
               <p>{t.stories.goBody}</p>
-              <Link href="/go" className="text-link">
+              <Link href={lp("/go")} className="text-link">
                 {t.stories.goMeet} <Arrow />
               </Link>
             </div>
@@ -235,7 +237,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                 {t.stories.freshTitle2}
               </h2>
               <p>{t.stories.freshBody}</p>
-              <Link href="/fresh" className="text-link">
+              <Link href={lp("/fresh")} className="text-link">
                 {t.stories.freshMeet} <Arrow />
               </Link>
             </div>
@@ -263,7 +265,7 @@ export function HomePage({ locale }: { locale: Locale }) {
               )}
             </h2>
             <p>{t.stories.payBody}</p>
-            <Link href="/pay" className="button light">
+            <Link href={lp("/pay")} className="button light">
               {t.stories.payCta} <Arrow />
             </Link>
             <span className="pay-note">{t.stories.payNote}</span>
@@ -280,7 +282,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <div className="small-story-copy">
               <h2>{t.stories.marketHeadline}</h2>
               <p>{t.stories.marketBody}</p>
-              <Link href="/market" className="text-link">
+              <Link href={lp("/market")} className="text-link">
                 {t.stories.marketMeet} <Arrow />
               </Link>
             </div>
@@ -295,14 +297,14 @@ export function HomePage({ locale }: { locale: Locale }) {
             <div className="small-story-copy">
               <h2>{t.stories.jobsHeadline}</h2>
               <p>{t.stories.jobsBody}</p>
-              <Link href="/jobs" className="text-link">
+              <Link href={lp("/jobs")} className="text-link">
                 {t.stories.jobsMeet} <Arrow />
               </Link>
             </div>
             <Mascot name="jobs" />
           </article>
         </div>
-        <Link href="/products" className="horizon-collapsed" data-reveal>
+        <Link href={lp("/products")} className="horizon-collapsed" data-reveal>
           <div>
             <div className="eyebrow">{t.stories.horizonEyebrow}</div>
             <h3>{t.stories.horizonTitle}</h3>
@@ -324,7 +326,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             </h2>
             <p>{t.why.p1}</p>
             <p>{t.why.p2}</p>
-            <Link href="/why-nexa" className="text-link">
+            <Link href={lp("/why-nexa")} className="text-link">
               {t.why.link} <Arrow />
             </Link>
           </div>
@@ -392,7 +394,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           </h2>
           <p>{t.morocco.p1}</p>
           <p>{t.morocco.p2}</p>
-          <Link href="/about" className="text-link">
+          <Link href={lp("/about")} className="text-link">
             {t.morocco.link} <Arrow />
           </Link>
           <div className="geography">
@@ -406,7 +408,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <div className="eyebrow">{t.roadmap.eyebrow}</div>
             <h2>{t.roadmap.title}</h2>
           </div>
-          <Link href="/roadmap" className="text-link">
+          <Link href={lp("/roadmap")} className="text-link">
             {t.roadmap.link} <Arrow />
           </Link>
         </div>
@@ -428,14 +430,14 @@ export function HomePage({ locale }: { locale: Locale }) {
             </p>
           </div>
           <div className="build-links">
-            <Link href="/careers">
+            <Link href={lp("/careers")}>
               <span>
                 <small>{t.build.careersSmall}</small>
                 {t.build.careers}
               </span>
               <Arrow external />
             </Link>
-            <Link href="/partners">
+            <Link href={lp("/partners")}>
               <span>
                 <small>{t.build.partnersSmall}</small>
                 {t.build.partners}
@@ -451,7 +453,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <h2>{t.updates.title}</h2>
           <p>{t.updates.body}</p>
         </div>
-        <Link href="/updates" className="update-link">
+        <Link href={lp("/updates")} className="update-link">
           <span className="eyebrow">{t.updates.cardEyebrow}</span>
           <h3>{t.updates.cardTitle}</h3>
           <span className="text-link">

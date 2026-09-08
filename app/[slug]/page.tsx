@@ -6,10 +6,13 @@ import { Brand, Arrow, Mascot, Status } from "@/components/brand";
 import { Ecosystem } from "@/components/ecosystem";
 import { Journey } from "@/components/journey";
 import { ProductFocus } from "@/components/product-focus";
+import { ProductLongform } from "@/components/product-longform";
 import { Roadmap } from "@/components/roadmap";
 import { products, getProduct, STAYS_URL, LINKEDIN_URL } from "@/lib/products";
-import { getBreadcrumbJsonLd } from "@/lib/entity";
-import { getSeoForSlug, toMetadata } from "@/lib/seo";
+import { getBreadcrumbJsonLd, getProductServiceJsonLd, productAnswerBlocks, productSeoH1 } from "@/lib/entity";
+import { getSeoForSlug, toMetadata, pageLanguageAlternates } from "@/lib/seo";
+import { insights } from "@/lib/insights";
+import { localizedSlugs } from "@/lib/i18n";
 const pages: Record<
   string,
   { title: string; eyebrow: string; description: string }
@@ -106,23 +109,32 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const hreflang = (localizedSlugs as readonly string[]).includes(slug)
+    ? { alternates: pageLanguageAlternates(slug) }
+    : undefined;
   const seo = getSeoForSlug(slug);
-  if (seo) return toMetadata(seo);
+  if (seo) return toMetadata(seo, hreflang);
   const product = getProduct(slug);
   const page = pages[slug];
   if (product) {
-    return toMetadata({
-      title: `${product.name} — ${product.category}`,
-      description: product.description,
-      path: `/${slug}/`,
-    });
+    return toMetadata(
+      {
+        title: `${product.name} — ${product.category}`,
+        description: product.description,
+        path: `/${slug}/`,
+      },
+      hreflang,
+    );
   }
   if (page) {
-    return toMetadata({
-      title: page.title,
-      description: page.description,
-      path: `/${slug}/`,
-    });
+    return toMetadata(
+      {
+        title: page.title,
+        description: page.description,
+        path: `/${slug}/`,
+      },
+      hreflang,
+    );
   }
   return { title: "Not found" };
 }
@@ -165,21 +177,24 @@ function ContactLink({ label = "Connect with Nexa" }: { label?: string }) {
     </a>
   );
 }
-function Directory() {
+function Directory({ only }: { only?: string[] }) {
+  const list = only
+    ? only.map((s) => getProduct(s)).filter(Boolean)
+    : products;
   return (
     <div className="product-directory">
-      {products.map((p, i) => (
-        <Link href={`/${p.slug}`} key={p.slug} className="directory-item">
+      {list.map((p, i) => (
+        <Link href={`/${p!.slug}`} key={p!.slug} className="directory-item">
           <div className="directory-top">
             <span>
-              0{i + 1} / {p.verb}
+              0{i + 1} / {p!.verb}
             </span>
             <Arrow external />
           </div>
-          <Brand product={p.logo ?? p.slug} size={64} />
-          <h3>{p.name}</h3>
-          <p>{p.short}</p>
-          <Status status={p.status} />
+          <Brand product={p!.logo ?? p!.slug} size={64} />
+          <h3>{p!.name}</h3>
+          <p>{p!.short}</p>
+          <Status status={p!.status} />
         </Link>
       ))}
     </div>
@@ -195,6 +210,31 @@ export default async function ContentPage({
   if (product)
     return (
       <main id="main" className="container">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              getBreadcrumbJsonLd([
+                { name: "Nexa", path: "/" },
+                { name: "Products", path: "/products/" },
+                { name: product.name, path: `/${slug}/` },
+              ]),
+            ),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              getProductServiceJsonLd({
+                product,
+                description:
+                  productAnswerBlocks[slug] ?? product.description,
+                path: `/${slug}/`,
+              }),
+            ),
+          }}
+        />
         <div style={{ paddingTop: 30 }}>
           <Bread label={product.name} slug={slug} />
         </div>
@@ -213,8 +253,11 @@ export default async function ContentPage({
               <span>{product.name}</span>
               <Status status={product.status} />
             </div>
-            <h1>{product.headline}</h1>
-            <p>{product.description}</p>
+            <h1>{productSeoH1[slug] ?? `${product.name} in Morocco`}</h1>
+            <p className="product-brand-line">{product.headline}</p>
+            <p className="product-answer-block">
+              {productAnswerBlocks[slug] ?? product.description}
+            </p>
             {slug === "stays" ? (
               <a
                 href={STAYS_URL}
@@ -242,6 +285,7 @@ export default async function ContentPage({
           )}
         </section>
         <ProductFocus slug={slug} />
+        <ProductLongform slug={slug} />
         <section className="product-details">
           <div>
             <div className="eyebrow">
@@ -348,12 +392,54 @@ export default async function ContentPage({
       <div className="container page-content">
         {slug === "products" && (
           <>
-            <Directory />
+            <div className="prose" style={{ marginBottom: 40, maxWidth: 720 }}>
+              <h2>What products does Nexa offer?</h2>
+              <p>
+                Nexa brings together specialized digital services across
+                accommodation, mobility, delivery, payments, groceries, commerce
+                and careers. Each product has its own purpose. Together, they
+                form the Nexa ecosystem.
+              </p>
+              <p>
+                The six core products are Nexa Stays, Nexa Go, Nexa Pay, Nexa
+                Fresh, Nexa Market and Nexa Jobs. Maps and Cloud remain future
+                concepts — not active public products.
+              </p>
+            </div>
+            <Directory
+              only={["stays", "go", "pay", "fresh", "market", "jobs"]}
+            />
+            <p className="fine-print" style={{ marginTop: 24 }}>
+              Exploring longer-term ideas?{" "}
+              <Link href="/maps" className="text-link">
+                Nexa Maps
+              </Link>{" "}
+              and{" "}
+              <Link href="/cloud" className="text-link">
+                Nexa Cloud
+              </Link>{" "}
+              are future concepts.
+            </p>
             <section className="subpage-cta">
               <h3>Specialized by design. Connected with purpose.</h3>
               <Link href="/ecosystem" className="text-link">
-                How Nexa connects <Arrow />
+                Learn about the Nexa digital ecosystem <Arrow />
               </Link>
+            </section>
+            <section style={{ marginTop: 50 }}>
+              <h2 style={{ marginBottom: 20 }}>From the Insights hub</h2>
+              <ul className="insights-list compact">
+                {insights.slice(0, 3).map((a) => (
+                  <li key={a.slug}>
+                    <Link href={`/insights/${a.slug}/`}>
+                      <strong>{a.title}</strong>
+                      <span className="text-link">
+                        Read <Arrow />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </section>
           </>
         )}
@@ -380,6 +466,34 @@ export default async function ContentPage({
               </div>
               <Ecosystem />
             </div>
+            <div className="prose" style={{ marginTop: 60, maxWidth: 760 }}>
+              <h2>How connections could work</h2>
+              <p>
+                <strong>Travel.</strong> Book accommodation through Nexa Stays.
+                Get to your destination and order dinner through Nexa Go. Get
+                apartment groceries through Nexa Fresh. Use Nexa Pay where
+                supported.
+              </p>
+              <p>
+                <strong>Commerce.</strong> Find a product through Nexa Market.
+                Use Nexa Go for eligible local delivery. Use Nexa Pay for
+                supported payment.
+              </p>
+              <p>
+                <strong>The principle.</strong> Integration should solve a
+                problem — simpler, faster, clearer, safer or more convenient. If
+                it does not improve the experience, it does not need to exist.
+              </p>
+              <p>
+                Read more in{" "}
+                <Link
+                  href="/insights/why-nexa-builds-specialized-products/"
+                  className="text-link"
+                >
+                  Why Nexa builds specialized products <Arrow />
+                </Link>
+              </p>
+            </div>
             <section style={{ marginTop: 80 }}>
               <div className="eyebrow">A CONNECTED JOURNEY</div>
               <h2 style={{ margin: "16px 0 35px" }}>A weekend in Marrakech.</h2>
@@ -387,7 +501,9 @@ export default async function ContentPage({
             </section>
             <section style={{ marginTop: 70 }}>
               <h2 style={{ marginBottom: 35 }}>Meet the family.</h2>
-              <Directory />
+              <Directory
+                only={["stays", "go", "pay", "fresh", "market", "jobs"]}
+              />
             </section>
           </>
         )}
@@ -503,6 +619,12 @@ export default async function ContentPage({
                   <dd>Technology company</dd>
                 </div>
                 <div>
+                  <dt>Model</dt>
+                  <dd>
+                    Connected ecosystem of specialized digital services
+                  </dd>
+                </div>
+                <div>
                   <dt>Origin</dt>
                   <dd>Morocco</dd>
                 </div>
@@ -515,20 +637,40 @@ export default async function ContentPage({
                   <dd>North Africa</dd>
                 </div>
                 <div>
-                  <dt>First product</dt>
+                  <dt>First / launch product</dt>
                   <dd>Nexa Stays</dd>
                 </div>
                 <div>
-                  <dt>Ecosystem</dt>
+                  <dt>Core products</dt>
                   <dd>
                     Nexa Stays, Nexa Go, Nexa Pay, Nexa Fresh, Nexa Market and
                     Nexa Jobs
                   </dd>
                 </div>
                 <div>
+                  <dt>Product statuses</dt>
+                  <dd>
+                    Stays launching · Pay in development roadmap · Go &amp;
+                    Fresh planned · Market &amp; Jobs long-term · Maps &amp;
+                    Cloud future concepts
+                  </dd>
+                </div>
+                <div>
                   <dt>Official website</dt>
                   <dd>
                     <a href="https://nexa.ma">nexa.ma</a>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Nexa Stays (commercial)</dt>
+                  <dd>
+                    <a
+                      href="https://nexastays.ma"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      nexastays.ma
+                    </a>
                   </dd>
                 </div>
                 <div>
@@ -554,6 +696,34 @@ export default async function ContentPage({
                 long-term ambition to expand across North Africa.
               </p>
             </section>
+            <div className="prose" style={{ marginTop: 40, maxWidth: 760 }}>
+              <h2>What Nexa is building</h2>
+              <p>
+                Nexa builds specialized digital products with clear purposes,
+                then connects them where the connection creates real value —
+                not a single overloaded super-app.{" "}
+                <Link href="/ecosystem" className="text-link">
+                  Learn about the Nexa digital ecosystem <Arrow />
+                </Link>
+              </p>
+              <h2>Official domains</h2>
+              <ul>
+                <li>
+                  <a href="https://nexa.ma">nexa.ma</a> — corporate site,
+                  ecosystem and product authority
+                </li>
+                <li>
+                  <a href="https://nexastays.ma">nexastays.ma</a> — commercial
+                  Nexa Stays accommodation experience
+                </li>
+              </ul>
+              <h2>Geographic focus</h2>
+              <p>
+                Morocco first. North Africa is a longer-term ambition that
+                follows strong execution at home — not a simultaneous regional
+                launch.
+              </p>
+            </div>
             <div className="morocco-section" style={{ paddingTop: 40 }}>
               <div className="morocco-photo">
                 <Image

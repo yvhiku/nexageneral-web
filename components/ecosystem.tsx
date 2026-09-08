@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { products } from "@/lib/products";
 import { Brand, Status, Arrow } from "./brand";
+import { detectLocale, localePath, translateStatus } from "@/lib/i18n";
 const colors = [
   "#e8507a",
   "#eab126",
@@ -14,6 +16,8 @@ const colors = [
   "#71839c",
 ];
 export function Ecosystem() {
+  const pathname = usePathname();
+  const locale = detectLocale(pathname);
   const [selected, setSelected] = useState(0);
   const host = useRef<HTMLDivElement>(null);
   const active = useRef(0);
@@ -201,9 +205,9 @@ export function Ecosystem() {
           <span className="eyebrow">{p.category}</span>
           <h3>{p.short}</h3>
         </div>
-        <Status status={p.status} />
+        <Status status={translateStatus(locale, p.status)} />
         <Link
-          href={`/${p.slug}`}
+          href={localePath(locale, `/${p.slug}`)}
           aria-label={`Explore ${p.name}`}
           className="circle-link"
         >

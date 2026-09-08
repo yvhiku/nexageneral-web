@@ -24,11 +24,63 @@ export function detectLocale(pathname: string | null): Locale {
   return "en";
 }
 
+/** Prefix internal hrefs for FR/AR trees (`/products` → `/fr/products`). */
+export function localePath(locale: Locale, href: string): string {
+  if (!href || href.startsWith("http") || href.startsWith("mailto:")) return href;
+  const path = href.startsWith("/") ? href : `/${href}`;
+  if (locale === "en") return path;
+  if (path === "/") return `/${locale}`;
+  return `/${locale}${path}`;
+}
+
+/** Strip /fr or /ar prefix from a pathname. */
+export function stripLocalePrefix(pathname: string | null): string {
+  if (!pathname) return "/";
+  if (pathname === "/fr" || pathname === "/ar") return "/";
+  if (pathname.startsWith("/fr/")) return pathname.slice(3) || "/";
+  if (pathname.startsWith("/ar/")) return pathname.slice(3) || "/";
+  return pathname;
+}
+
+/** Language switcher target for the same logical page. */
+export function localizedHrefForSwitch(
+  pathname: string | null,
+  target: Locale,
+): string {
+  return localePath(target, stripLocalePrefix(pathname));
+}
+
+/** Slugs mirrored under /fr/* and /ar/* (Phase 4). */
+export const localizedSlugs = [
+  "products",
+  "ecosystem",
+  "why-nexa",
+  "roadmap",
+  "about",
+  "careers",
+  "partners",
+  "updates",
+  "contact",
+  "stays",
+  "go",
+  "pay",
+  "fresh",
+  "market",
+  "jobs",
+  "maps",
+  "cloud",
+  "privacy",
+  "terms",
+  "cookies",
+  "credits",
+] as const;
+
 export type Dictionary = {
   skip: string;
   nav: {
     products: string;
     ecosystem: string;
+    insights: string;
     whyNexa: string;
     roadmap: string;
     about: string;
@@ -61,6 +113,7 @@ export type Dictionary = {
     roadmap: string;
     careers: string;
     updates: string;
+    insights: string;
   };
   status: {
     Launching: string;
@@ -215,6 +268,7 @@ const en: Dictionary = {
   nav: {
     products: "Products",
     ecosystem: "Ecosystem",
+    insights: "Insights",
     whyNexa: "Why Nexa",
     roadmap: "Roadmap",
     about: "About",
@@ -247,6 +301,7 @@ const en: Dictionary = {
     roadmap: "Roadmap",
     careers: "Careers",
     updates: "Updates",
+    insights: "Insights",
   },
   status: {
     Launching: "Launching",
@@ -427,6 +482,7 @@ const fr: Dictionary = {
   nav: {
     products: "Produits",
     ecosystem: "Écosystème",
+    insights: "Analyses",
     whyNexa: "Pourquoi Nexa",
     roadmap: "Feuille de route",
     about: "À propos",
@@ -459,6 +515,7 @@ const fr: Dictionary = {
     roadmap: "Feuille de route",
     careers: "Carrières",
     updates: "Actualités",
+    insights: "Analyses",
   },
   status: {
     Launching: "Lancement",
@@ -640,6 +697,7 @@ const ar: Dictionary = {
   nav: {
     products: "المنتجات",
     ecosystem: "النظام البيئي",
+    insights: "رؤى",
     whyNexa: "لماذا نكسا",
     roadmap: "خارطة الطريق",
     about: "من نحن",
@@ -655,7 +713,7 @@ const ar: Dictionary = {
   },
   footer: {
     tagline: "نظام بيئي واحد\nللحياة اليومية.",
-    builtIn: "بُني في المغرب.",
+    builtIn: "بُني في المغرب. مصمّم للنمو.",
     products: "منتجاتنا",
     company: "الشركة",
     connect: "لنتواصل",
@@ -672,6 +730,7 @@ const ar: Dictionary = {
     roadmap: "خارطة الطريق",
     careers: "الوظائف",
     updates: "التحديثات",
+    insights: "رؤى",
   },
   status: {
     Launching: "قيد الإطلاق",

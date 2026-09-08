@@ -2,12 +2,13 @@
 
 Nexa is a Moroccan technology company building a connected ecosystem of specialized digital services for everyday life. The ecosystem includes Nexa Stays for accommodation, Nexa Go for rides, restaurant food delivery and local delivery, Nexa Pay for payments, Nexa Fresh for groceries, Nexa Market for commerce and Nexa Jobs for employment. Nexa is built in Morocco with a long-term ambition to expand across North Africa.
 
-## Official pages
+## Official pages (EN)
 
 - https://nexa.ma/
 - https://nexa.ma/about/
 - https://nexa.ma/products/
 - https://nexa.ma/ecosystem/
+- https://nexa.ma/insights/
 - https://nexa.ma/why-nexa/
 - https://nexa.ma/roadmap/
 - https://nexa.ma/stays/
@@ -17,6 +18,25 @@ Nexa is a Moroccan technology company building a connected ecosystem of speciali
 - https://nexa.ma/market/
 - https://nexa.ma/jobs/
 - https://nexa.ma/contact/
+
+## Locales
+
+- French home: https://nexa.ma/fr/
+- Arabic home: https://nexa.ma/ar/
+- French product/company mirrors: https://nexa.ma/fr/{slug}/
+- Arabic product/company mirrors: https://nexa.ma/ar/{slug}/
+- Insights hubs: https://nexa.ma/insights/ · https://nexa.ma/fr/insights/ · https://nexa.ma/ar/insights/
+
+## Insights (articles in English)
+
+- https://nexa.ma/insights/why-nexa-builds-specialized-products/
+- https://nexa.ma/insights/short-term-accommodation-morocco-digital-trends/
+- https://nexa.ma/insights/food-delivery-vs-grocery-delivery-morocco/
+- https://nexa.ma/insights/building-digital-products-for-moroccan-consumer-behavior/
+- https://nexa.ma/insights/payments-trust-digital-services-morocco/
+- https://nexa.ma/insights/local-rides-and-delivery-cities-morocco/
+- https://nexa.ma/insights/host-guest-trust-short-term-stays-morocco/
+- https://nexa.ma/insights/north-africa-ambition-morocco-first/
 
 ## Product site
 

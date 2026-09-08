@@ -10,6 +10,8 @@ import {
   getDictionary,
   localeHome,
   localeMeta,
+  localePath,
+  localizedHrefForSwitch,
   locales,
   type Locale,
 } from "@/lib/i18n";
@@ -20,11 +22,12 @@ export function Navigation() {
   const t = getDictionary(locale).nav;
   const home = localeHome[locale];
   const links: [string, string][] = [
-    [t.products, "/products"],
-    [t.ecosystem, "/ecosystem"],
-    [t.whyNexa, "/why-nexa"],
-    [t.roadmap, "/roadmap"],
-    [t.about, "/about"],
+    [t.products, localePath(locale, "/products")],
+    [t.ecosystem, localePath(locale, "/ecosystem")],
+    [t.insights, localePath(locale, "/insights")],
+    [t.whyNexa, localePath(locale, "/why-nexa")],
+    [t.roadmap, localePath(locale, "/roadmap")],
+    [t.about, localePath(locale, "/about")],
   ];
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
@@ -58,7 +61,7 @@ export function Navigation() {
             {locales.map((code: Locale) => (
               <Link
                 key={code}
-                href={localeHome[code]}
+                href={localizedHrefForSwitch(pathname, code)}
                 hrefLang={localeMeta[code].htmlLang}
                 className={code === locale ? "active" : undefined}
                 aria-current={code === locale ? "page" : undefined}
@@ -89,19 +92,21 @@ export function Navigation() {
       </div>
       {open && (
         <nav id="mobile-nav" aria-label={t.mobileNav} className="mobile-nav">
-          {[...links, [t.careers, "/careers"], [t.contact, "/contact"]].map(
-            ([label, url]) => (
-              <Link onClick={() => setOpen(false)} key={url} href={url}>
-                {label}
-                <ArrowUpRight size={17} />
-              </Link>
-            ),
-          )}
+          {[
+            ...links,
+            [t.careers, localePath(locale, "/careers")],
+            [t.contact, localePath(locale, "/contact")],
+          ].map(([label, url]) => (
+            <Link onClick={() => setOpen(false)} key={url} href={url}>
+              {label}
+              <ArrowUpRight size={17} />
+            </Link>
+          ))}
           <div className="lang-switch mobile-lang">
             {locales.map((code: Locale) => (
               <Link
                 key={code}
-                href={localeHome[code]}
+                href={localizedHrefForSwitch(pathname, code)}
                 onClick={() => setOpen(false)}
                 className={code === locale ? "active" : undefined}
               >

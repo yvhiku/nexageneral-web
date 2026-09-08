@@ -9,9 +9,9 @@ import "@fontsource/manrope/700.css";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { homeSeo, toMetadata } from "@/lib/seo";
+import { homeSeo, toMetadata, homeLanguageAlternates } from "@/lib/seo";
 
-const enHome = toMetadata(homeSeo.en);
+const enHome = toMetadata(homeSeo.en, { alternates: homeLanguageAlternates });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nexa.ma"),
@@ -21,7 +21,13 @@ export const metadata: Metadata = {
     absolute: homeSeo.en.title,
     template: "%s | Nexa",
   },
-  icons: { icon: "/brand/nexa.webp" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     type: "website",
     locale: "en_US",

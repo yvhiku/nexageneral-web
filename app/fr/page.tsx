@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { DocumentLocale } from "@/components/document-locale";
 import { HomePage } from "@/components/home-page";
-import { homeSeo, toMetadata } from "@/lib/seo";
+import { homeSeo, toMetadata, homeLanguageAlternates } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  ...toMetadata(homeSeo.fr),
+  ...toMetadata(homeSeo.fr, { alternates: homeLanguageAlternates }),
   openGraph: {
     ...toMetadata(homeSeo.fr).openGraph,
     locale: "fr_FR",

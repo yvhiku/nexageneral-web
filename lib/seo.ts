@@ -16,18 +16,66 @@ function absoluteCanonical(path: string) {
   return `${NEXA_ORIGIN}${withSlash}`;
 }
 
-export function toMetadata(entry: SeoEntry): Metadata {
+export function toMetadata(
+  entry: SeoEntry,
+  extra?: Pick<Metadata, "alternates">,
+): Metadata {
   const ogTitle = entry.ogTitle ?? entry.title;
   const ogDescription = entry.ogDescription ?? entry.description;
   const path = entry.path.endsWith("/") ? entry.path : `${entry.path}/`;
   return {
     title: { absolute: entry.title },
     description: entry.description,
-    alternates: { canonical: path },
+    alternates: {
+      canonical: path,
+      ...extra?.alternates,
+    },
     openGraph: {
       title: ogTitle,
       description: ogDescription,
       url: path,
+    },
+  };
+}
+
+export const homeLanguageAlternates = {
+  languages: {
+    en: "https://nexa.ma/",
+    "fr-MA": "https://nexa.ma/fr/",
+    "ar-MA": "https://nexa.ma/ar/",
+    "x-default": "https://nexa.ma/",
+  },
+} as const;
+
+/** Page-level hreflang for mirrored EN/FR/AR URLs (trailing slash). */
+export function pageLanguageAlternates(slug: string) {
+  const path = slug.replace(/^\/+|\/+$/g, "");
+  return {
+    languages: {
+      en: `${NEXA_ORIGIN}/${path}/`,
+      "fr-MA": `${NEXA_ORIGIN}/fr/${path}/`,
+      "ar-MA": `${NEXA_ORIGIN}/ar/${path}/`,
+      "x-default": `${NEXA_ORIGIN}/${path}/`,
+    },
+  };
+}
+
+export function insightsLanguageAlternates(articleSlug?: string) {
+  if (articleSlug) {
+    const s = articleSlug.replace(/^\/+|\/+$/g, "");
+    return {
+      languages: {
+        en: `${NEXA_ORIGIN}/insights/${s}/`,
+        "x-default": `${NEXA_ORIGIN}/insights/${s}/`,
+      },
+    };
+  }
+  return {
+    languages: {
+      en: `${NEXA_ORIGIN}/insights/`,
+      "fr-MA": `${NEXA_ORIGIN}/fr/insights/`,
+      "ar-MA": `${NEXA_ORIGIN}/ar/insights/`,
+      "x-default": `${NEXA_ORIGIN}/insights/`,
     },
   };
 }
@@ -135,37 +183,37 @@ export const pageSeo: Record<string, SeoEntry> = {
 
 export const productSeo: Record<string, SeoEntry> = {
   stays: {
-    title: "Nexa Stays — Accommodation Platform in Morocco",
+    title: "Nexa Stays — Accommodation Platform in Morocco | Nexa",
     description:
-      "Nexa Stays is Nexa’s accommodation platform for clearer, more structured short-term stays in Morocco — the starting point of the Nexa ecosystem.",
+      "Nexa Stays is Nexa’s accommodation platform for clearer, more structured short-term stays in Morocco — the starting product of the Nexa ecosystem.",
     path: "/stays/",
   },
   go: {
-    title: "Nexa Go — Rides, Food & Local Delivery in Morocco",
+    title: "Nexa Go Morocco — Rides, Food & Local Delivery | Nexa",
     description:
-      "Discover Nexa Go, Nexa’s mobility and delivery platform for taxi rides, restaurant food delivery and general local delivery in Morocco.",
+      "Nexa Go is Nexa’s mobility and delivery platform in Morocco for local rides, restaurant food delivery and general local delivery — part of the Nexa ecosystem.",
     path: "/go/",
   },
   pay: {
-    title: "Nexa Pay — Digital Payments for the Nexa Ecosystem",
+    title: "Nexa Pay Morocco — Digital Payments for the Nexa Ecosystem",
     description:
-      "Nexa Pay is planned as the payment layer for supported Nexa services and merchant experiences in Morocco, developed progressively.",
+      "Nexa Pay Morocco is planned as the payment layer for supported Nexa services and merchant experiences in Morocco, developed progressively within the Nexa ecosystem.",
     path: "/pay/",
   },
   fresh: {
-    title: "Nexa Fresh — Fast Grocery Delivery in Morocco",
+    title: "Nexa Fresh — Grocery Delivery in Morocco | Nexa",
     description:
       "Nexa Fresh is Nexa’s dedicated grocery-delivery service for everyday essentials in Morocco — separate from restaurant food delivery on Nexa Go.",
     path: "/fresh/",
   },
   market: {
-    title: "Nexa Market — Digital Marketplace for Morocco",
+    title: "Nexa Market — Digital Marketplace in Morocco | Nexa",
     description:
       "Nexa Market is planned as Nexa’s e-commerce marketplace connecting customers and merchants in Morocco.",
     path: "/market/",
   },
   jobs: {
-    title: "Nexa Jobs — Jobs and Recruitment in Morocco",
+    title: "Nexa Jobs — Jobs & Recruitment Platform in Morocco | Nexa",
     description:
       "Nexa Jobs is planned as Nexa’s careers platform connecting candidates and employers in Morocco.",
     path: "/jobs/",

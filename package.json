@@ -9,6 +9,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "og": "node scripts/generate-og.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
+    "entity-register": "node --experimental-strip-types scripts/generate-entity-register.ts",
     "format": "prettier --write app components lib scripts next.config.ts tsconfig.json eslint.config.mjs"
   },
   "dependencies": {
