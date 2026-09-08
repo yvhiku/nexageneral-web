@@ -1,31 +1,31 @@
 # Nexa mascot asset preparation
 
-## Current homepage mascots (2026-09-08)
+## Current serving model (2026-09-08)
 
-Replaced poses for **pay**, **market**, **jobs**, and **stays** from supplied new artwork (black studio backgrounds). Edge-connected near-black flood-fill → true alpha WebP in `public/mascots/{pay,market,jobs,stays}.webp`.
+The site serves **PNG masters only** from `public/mascots/{name}.png` via `Mascot` in `components/brand.tsx`. Converted mascot WebPs are not used.
 
-Sources (Cursor session assets):
+| Name | File | Notes |
+|------|------|--------|
+| parent | `parent.png` | Homepage hero |
+| go | `go.png` | Homepage Go card (flying pose) |
+| nexagoriding | `nexagoriding.png` | `/go/` product page |
+| fresh | `fresh.png` | Homepage / product |
+| pay | `pay.png` | Homepage / product |
+| market | `market.png` | Homepage / product |
+| stays | `stays.png` | Homepage / product |
+| jobs | `jobs.png` | Homepage / product |
+| family | `family.png` | Final CTA |
 
-- `nexapaynewpose-*.png` — standing, phone “All set!”
-- `nexamarketnewpose-*.png` — sitting among market parcels/bags
-- `nexastaysnewpose-*.jpg` — sitting on suitcase with stay props
-- `nexajobsnewposeEN-*.jpg` — desk / thumbs-up with jobs UI chrome
+## Optional background cut
 
-`go.webp`, `fresh.webp`, and `parent.webp` unchanged in this pass.
-
-Regenerate cutouts (from this repo root):
+If a new PNG still has a studio black plate, edge flood-fill with:
 
 ```bash
-# inputs: paths to the four source images
-node scripts/cut-mascot-bg.mjs
+node scripts/cut-mascot-bg.mjs <input.png> <output.webp>
 ```
 
-(If the helper script is absent, re-run the flood-fill snippet used in the 2026-09-08 update, or restore from git history.)
+Prefer keeping/serving a transparent PNG master when the art is already cut. The helper currently writes WebP for tooling convenience; copy or re-export PNG for production if needed.
 
-Alpha checked via corner samples (`rgba(0,0,0,0)`) and transparent-pixel counts. Jobs keeps internal black desk/chair/books; only backdrop black connected to the canvas edge was cleared.
+## Earlier notes
 
----
-
-## Earlier preparation (launch set)
-
-Built-in image_gen tool, background-extraction edits. Inputs: `/Users/apple/Downloads/nexa{stays,go,pay,fresh,market,jobs}pose.png`. Market previously used a white-canvas fallback; **market now has true alpha** like the other product mascots.
+Pose replacements (pay, market, jobs, stays) and earlier launch-set prep remain historical; see git history for prior WebP cutout workflow.

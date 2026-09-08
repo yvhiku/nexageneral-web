@@ -51,14 +51,31 @@ export function Status({
   );
 }
 const mascotSize: Record<string, { width: number; height: number }> = {
-  parent: { width: 900, height: 900 },
-  go: { width: 937, height: 1000 },
-  fresh: { width: 882, height: 1000 },
-  pay: { width: 1076, height: 1200 },
-  market: { width: 1743, height: 1200 },
-  stays: { width: 1348, height: 1200 },
-  jobs: { width: 1382, height: 1200 },
+  parent: { width: 890, height: 1162 },
+  go: { width: 1214, height: 1295 },
+  nexagoriding: { width: 1375, height: 1144 },
+  nexafreshriding: { width: 1374, height: 1145 },
+  nexastaysbanner: { width: 1374, height: 1145 },
+  nexapaybanner: { width: 1374, height: 1145 },
+  nexamarketbanner: { width: 1374, height: 1145 },
+  nexajobsbanner: { width: 1374, height: 1145 },
+  fresh: { width: 1178, height: 1335 },
+  pay: { width: 1230, height: 1278 },
+  market: { width: 1254, height: 1254 },
+  stays: { width: 1254, height: 1254 },
+  jobs: { width: 1254, height: 1254 },
   family: { width: 1748, height: 818 },
+};
+
+const mascotAlt: Record<string, string> = {
+  family: "Nexa family of product mascots",
+  parent: "Nexa Parent mascot",
+  nexagoriding: "Nexa Go mascot",
+  nexafreshriding: "Nexa Fresh mascot",
+  nexastaysbanner: "Nexa Stays mascot",
+  nexapaybanner: "Nexa Pay mascot",
+  nexamarketbanner: "Nexa Market mascot",
+  nexajobsbanner: "Nexa Jobs mascot",
 };
 
 export function Mascot({
@@ -73,14 +90,10 @@ export function Mascot({
   const size = mascotSize[name] ?? { width: 1000, height: 1000 };
   return (
     <Image
-      src={`/mascots/${name}.webp`}
+      src={`/mascots/${name}.png`}
       width={size.width}
       height={size.height}
-      alt={
-        name === "family"
-          ? "Nexa family of product mascots"
-          : `Nexa ${name === "parent" ? "Parent" : name} mascot`
-      }
+      alt={mascotAlt[name] ?? `Nexa ${name} mascot`}
       className={`mascot ${className}`}
       priority={priority}
       quality={100}

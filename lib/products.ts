@@ -33,7 +33,7 @@ export const products: Product[] = [
       "Privacy-conscious address handling and host verification designed for greater trust.",
     ],
     connections: ["go", "pay", "fresh"],
-    mascot: "stays",
+    mascot: "nexastaysbanner",
     logo: "stays",
   },
   {
@@ -54,7 +54,7 @@ export const products: Product[] = [
       "Send or receive documents, parcels, retail purchases and other everyday items locally.",
     ],
     connections: ["stays", "pay", "market", "fresh"],
-    mascot: "go",
+    mascot: "nexagoriding",
     logo: "go",
   },
   {
@@ -75,7 +75,7 @@ export const products: Product[] = [
       "Capabilities depend on regulatory, operational and technical requirements in each market.",
     ],
     connections: ["stays", "go", "fresh", "market"],
-    mascot: "pay",
+    mascot: "nexapaybanner",
     logo: "pay",
   },
   {
@@ -96,7 +96,7 @@ export const products: Product[] = [
       "Long-term target of delivery in under 15 minutes in supported areas, subject to local operations.",
     ],
     connections: ["pay", "stays", "go"],
-    mascot: "fresh",
+    mascot: "nexafreshriding",
     logo: "fresh",
   },
   {
@@ -117,7 +117,7 @@ export const products: Product[] = [
       "Future links to Nexa Pay and selected local deliveries through Nexa Go where useful.",
     ],
     connections: ["pay", "go"],
-    mascot: "market",
+    mascot: "nexamarketbanner",
     logo: "market",
   },
   {
@@ -138,7 +138,7 @@ export const products: Product[] = [
       "Designed to improve the connection between employers, candidates and opportunities.",
     ],
     connections: [],
-    mascot: "jobs",
+    mascot: "nexajobsbanner",
     logo: "jobs",
   },
   {
