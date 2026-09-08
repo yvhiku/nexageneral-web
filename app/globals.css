@@ -219,9 +219,8 @@ svg {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: transparent;
-  border-bottom: 1px solid transparent;
-  backdrop-filter: none;
+  background: rgba(255, 255, 255, 0.97);
+  border-bottom: 1px solid #ebeff2;
 }
 .nav-wrap {
   width: min(1376px, calc(100% - 80px));
@@ -304,7 +303,7 @@ svg {
 }
 .mobile-nav {
   padding: 12px 28px 26px;
-  background: transparent;
+  background: white;
   border-top: 1px solid var(--line);
 }
 .mobile-nav a {

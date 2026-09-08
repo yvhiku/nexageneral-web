@@ -13,16 +13,11 @@ export function Brand({
     <Cloud size={size} strokeWidth={1.4} />
   ) : (
     <Image
-      src={
-        product === "nexa"
-          ? "/brand/nexa-mark.png"
-          : `/brand/${product}.webp`
-      }
+      src={`/brand/${product}.webp`}
       width={size}
       height={size}
       alt=""
       className="brand-icon"
-      priority={product === "nexa"}
     />
   );
 }
