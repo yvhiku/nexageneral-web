@@ -10,6 +10,14 @@ export type SeoEntry = {
   ogDescription?: string;
 };
 
+/** Site-wide link-preview image (`public/og/default.png`). */
+export const DEFAULT_OG_IMAGE = {
+  url: "/og/default.png",
+  width: 1536,
+  height: 1024,
+  alt: "Nexa — One ecosystem for everyday life. Built in Morocco.",
+} as const;
+
 function absoluteCanonical(path: string) {
   const p = path.startsWith("/") ? path : `/${path}`;
   const withSlash = p.endsWith("/") ? p : `${p}/`;
@@ -34,6 +42,13 @@ export function toMetadata(
       title: ogTitle,
       description: ogDescription,
       url: path,
+      images: [{ ...DEFAULT_OG_IMAGE }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogTitle,
+      description: ogDescription,
+      images: [DEFAULT_OG_IMAGE.url],
     },
   };
 }

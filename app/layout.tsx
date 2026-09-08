@@ -9,7 +9,12 @@ import "@fontsource/manrope/700.css";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { homeSeo, toMetadata, homeLanguageAlternates } from "@/lib/seo";
+import {
+  DEFAULT_OG_IMAGE,
+  homeSeo,
+  toMetadata,
+  homeLanguageAlternates,
+} from "@/lib/seo";
 
 const enHome = toMetadata(homeSeo.en, { alternates: homeLanguageAlternates });
 
@@ -24,7 +29,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-48.png", type: "image/png", sizes: "48x48" },
       { url: "/icon.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
     ],
     apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
@@ -33,20 +40,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     siteName: "Nexa",
     ...enHome.openGraph,
-    images: [
-      {
-        url: "/og/default.png",
-        width: 1200,
-        height: 630,
-        alt: homeSeo.en.title,
-      },
-    ],
+    images: [{ ...DEFAULT_OG_IMAGE, alt: homeSeo.en.title }],
   },
   twitter: {
     card: "summary_large_image",
     title: homeSeo.en.title,
     description: homeSeo.en.description,
-    images: ["/og/default.png"],
+    images: [DEFAULT_OG_IMAGE.url],
   },
 };
 export default function RootLayout({
@@ -58,6 +58,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon-48.png" type="image/png" sizes="48x48" />
         <link rel="icon" href="/icon.png" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
       </head>

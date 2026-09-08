@@ -3,10 +3,12 @@ import { DocumentLocale } from "@/components/document-locale";
 import { HomePage } from "@/components/home-page";
 import { homeSeo, toMetadata, homeLanguageAlternates } from "@/lib/seo";
 
+const frHome = toMetadata(homeSeo.fr, { alternates: homeLanguageAlternates });
+
 export const metadata: Metadata = {
-  ...toMetadata(homeSeo.fr, { alternates: homeLanguageAlternates }),
+  ...frHome,
   openGraph: {
-    ...toMetadata(homeSeo.fr).openGraph,
+    ...frHome.openGraph,
     locale: "fr_FR",
   },
 };

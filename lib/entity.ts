@@ -16,9 +16,21 @@ export const NEXA_ENTITY_DESCRIPTION =
 
 export const NEXA_SITE_NAME = "Nexa";
 export const NEXA_ORIGIN = "https://nexa.ma";
-export const NEXA_LOGO = `${NEXA_ORIGIN}/brand/nexa.webp`;
+/** Prefer PNG for crawlers; blue parent mark. */
+export const NEXA_LOGO = `${NEXA_ORIGIN}/icon-512.png`;
 export const ORGANIZATION_ID = `${NEXA_ORIGIN}/#organization`;
 export const WEBSITE_ID = `${NEXA_ORIGIN}/#website`;
+
+/** Main chrome links — also used for SiteNavigationElement (sitelinks hint). */
+export const NEXA_PRIMARY_NAV = [
+  { name: "Products", path: "/products/" },
+  { name: "Ecosystem", path: "/ecosystem/" },
+  { name: "Insights", path: "/insights/" },
+  { name: "Why Nexa", path: "/why-nexa/" },
+  { name: "Roadmap", path: "/roadmap/" },
+  { name: "About", path: "/about/" },
+  { name: "Nexa Stays", path: "/stays/" },
+] as const;
 
 /** Single shared Organization — reuse everywhere; do not fork descriptions. */
 export function getOrganizationJsonLd() {
@@ -31,7 +43,10 @@ export function getOrganizationJsonLd() {
     logo: {
       "@type": "ImageObject",
       url: NEXA_LOGO,
+      width: 512,
+      height: 512,
     },
+    image: NEXA_LOGO,
     description: NEXA_ENTITY_DESCRIPTION,
     foundingLocation: {
       "@type": "Place",
@@ -60,6 +75,30 @@ export function getWebSiteJsonLd() {
     description: NEXA_ENTITY_DESCRIPTION,
     publisher: { "@id": ORGANIZATION_ID },
     inLanguage: ["en", "fr", "ar"],
+    hasPart: NEXA_PRIMARY_NAV.map((item, index) => ({
+      "@type": "WebPage",
+      "@id": `${NEXA_ORIGIN}${item.path}#webpage`,
+      name: item.name,
+      url: `${NEXA_ORIGIN}${item.path}`,
+      position: index + 1,
+      isPartOf: { "@id": WEBSITE_ID },
+    })),
+  };
+}
+
+export function getSiteNavigationJsonLd() {
+  return {
+    "@type": "ItemList",
+    "@id": `${NEXA_ORIGIN}/#sitenav`,
+    name: "Primary navigation",
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    numberOfItems: NEXA_PRIMARY_NAV.length,
+    itemListElement: NEXA_PRIMARY_NAV.map((item, index) => ({
+      "@type": "SiteNavigationElement",
+      position: index + 1,
+      name: item.name,
+      url: `${NEXA_ORIGIN}${item.path}`,
+    })),
   };
 }
 
@@ -88,6 +127,7 @@ export function getHomeJsonLdGraph() {
     "@graph": [
       getOrganizationJsonLd(),
       getWebSiteJsonLd(),
+      getSiteNavigationJsonLd(),
       getWebPageJsonLd({
         name: "Nexa Morocco — Connected Digital Services Ecosystem",
         description: NEXA_ENTITY_DESCRIPTION,
