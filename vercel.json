@@ -1,12 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.nexa.ma" }],
-      "destination": "https://nexa.ma/:path*",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     {
       "source": "/google167835fadb409db0.html",
