@@ -12,11 +12,11 @@ export type SeoEntry = {
   ogImage?: string;
 };
 
-/** Site-wide link-preview image (`public/og/default.png`). */
+/** Site-wide link-preview image (`public/og/default.jpg`, built by `npm run og`). */
 export const DEFAULT_OG_IMAGE = {
-  url: "/og/default.png",
-  width: 1536,
-  height: 1024,
+  url: "/og/default.jpg",
+  width: 1200,
+  height: 800,
   alt: "Nexa — One ecosystem for everyday life. Built in Morocco.",
 } as const;
 

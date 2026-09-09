@@ -96,25 +96,40 @@ const mascotAlt: Record<string, string> = {
   nexajobscareers: "Nexa Jobs careers",
 };
 
+const THUMB_EDGE = 128;
+
+/**
+ * Serves the lossless WebP delivery asset built from the PNG master by
+ * `npm run optimize:mascots` (see docs/asset-notes.md). Masters are never served.
+ */
 export function Mascot({
   name,
   className = "",
   priority = false,
+  variant = "default",
 }: {
   name: string;
   className?: string;
   priority?: boolean;
+  /** `thumb` = 128px marker (roadmap); `default` = full delivery asset. */
+  variant?: "default" | "thumb";
 }) {
-  const size = mascotSize[name] ?? { width: 1000, height: 1000 };
+  const master = mascotSize[name] ?? { width: 1000, height: 1000 };
+  const isThumb = variant === "thumb";
+  const scale = isThumb ? THUMB_EDGE / Math.max(master.width, master.height) : 1;
+  const width = Math.round(master.width * scale);
+  const height = Math.round(master.height * scale);
+  const src = isThumb
+    ? `/mascots/thumbs/${name}.webp`
+    : `/mascots/${name}.webp`;
   return (
     <Image
-      src={`/mascots/${name}.png`}
-      width={size.width}
-      height={size.height}
+      src={src}
+      width={width}
+      height={height}
       alt={mascotAlt[name] ?? `Nexa ${name} mascot`}
       className={`mascot ${className}`}
       priority={priority}
-      quality={100}
     />
   );
 }

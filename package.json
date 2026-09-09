@@ -10,6 +10,8 @@
     "lint": "eslint .",
     "og": "node scripts/generate-og.mjs",
     "og:products": "node scripts/generate-product-og.mjs",
+    "optimize:mascots": "node scripts/optimize-mascots.mjs",
+    "favicons": "node scripts/generate-favicons.mjs",
     "indexnow": "node scripts/indexnow.mjs",
     "entity-register": "node --experimental-strip-types scripts/generate-entity-register.ts",
     "format": "prettier --write app components lib scripts next.config.ts tsconfig.json eslint.config.mjs"

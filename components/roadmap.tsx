@@ -140,6 +140,7 @@ export function Roadmap({ locale = "en" }: { locale?: Locale }) {
                     >
                       <Mascot
                         name={item.mascot}
+                        variant="thumb"
                         className="roadmap-mascot"
                       />
                       <span>Nexa {item.name}</span>

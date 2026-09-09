@@ -26,12 +26,14 @@ export const metadata: Metadata = {
     absolute: homeSeo.en.title,
     template: "%s | Nexa",
   },
+  // Single icon set (built by `npm run favicons`). 48px first: Google Search
+  // picks the 48×48 PNG for result favicons.
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
       { url: "/icon-48.png", type: "image/png", sizes: "48x48" },
       { url: "/icon.png", type: "image/png", sizes: "32x32" },
       { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/favicon.ico", sizes: "any" },
     ],
     apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
@@ -56,12 +58,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon-48.png" type="image/png" sizes="48x48" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="32x32" />
-        <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
-      </head>
       <body>
         <a className="skip-link" href="#main">
           Skip to content

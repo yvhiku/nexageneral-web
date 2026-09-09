@@ -2,7 +2,25 @@
 
 ## Serving model
 
-Site serves **PNG masters** from `public/mascots/{name}.png` via `Mascot` in `components/brand.tsx`.
+- `public/mascots/{name}.png` — **PNG master**. Source of truth, never edited by scripts, never served.
+- `public/mascots/{name}.webp` — **what the site serves** via `Mascot` in `components/brand.tsx`.
+- `public/mascots/thumbs/{name}.webp` — 128px markers for the Roadmap (`<Mascot variant="thumb" />`).
+
+Delivery files are **lossless WebP** (no chroma subsampling, no artefacts), resized to 2x the largest CSS box the asset is shown in. The build script decodes every WebP and fails if a single visible pixel differs from the resized master. Result: ~3x smaller than the PNGs, visually identical.
+
+```bash
+npm run optimize:mascots   # rerun after adding or replacing any PNG master
+```
+
+Caps: heroes/corporate/banners 1000px · home poses 800px · `family` 1440px wide · thumbs 128px. Adjust in `scripts/optimize-mascots.mjs` if a CSS box grows.
+
+The site is a static export with `images.unoptimized`, so nothing is resized or re-encoded at request time — whatever is in `public/` ships as-is. Do **not** point `Mascot` back at `.png`.
+
+## Favicons
+
+Built from `public/brand/nexa.png` by `npm run favicons`: blue mark on a pale rounded tile (`#eaf2fc`) so it stays recognisable at 16–48px. Google Search needs a clear square at 48px (`icon-48.png` is listed first in `app/layout.tsx`); sparse transparent marks fall back to the globe icon. One icon set only — no `app/icon.png` file conventions, no manual `<link>`s.
+
+`vercel.json` 301s `www.nexa.ma` → `nexa.ma` so Google associates the favicon with a single host. After deploy, request indexing for `https://nexa.ma/` in Search Console; the SERP icon updates on Google's recrawl schedule.
 
 ## Design rules (locked)
 
@@ -32,21 +50,24 @@ Site serves **PNG masters** from `public/mascots/{name}.png` via `Mascot` in `co
 
 ## Open Graph
 
-Dedicated **1200×630** compositions in `public/og/` (not hero crops):
+Dedicated **1200×630** compositions in `public/og/` (not hero crops), lossless PNG:
 
 ```bash
-npm run og:products
+npm run og:products   # product + ecosystem comps from mascot masters
+npm run og            # og/default.png (master art) → og/default.jpg (1200×800, q88)
 ```
 
 | Page | OG file |
 |------|---------|
 | Product `/stays/` … `/jobs/` | `og/{slug}.png` |
 | Ecosystem | `og/ecosystem.png` |
-| Corporate default | `og/default.png` |
+| Corporate default | `og/default.jpg` (master: `og/default.png`, not served) |
+
+Keep every OG under ~600KB — WhatsApp/LinkedIn crawlers drop heavier previews.
 
 ## Target taxonomy (future rename)
 
 ```text
 public/mascots/{parent,stays,go,pay,fresh,market,jobs,family}/…
-public/og/default.png | stays|go|pay|fresh|market|jobs|ecosystem.png
+public/og/default.jpg | stays|go|pay|fresh|market|jobs|ecosystem.png
 ```

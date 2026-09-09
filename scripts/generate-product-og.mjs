@@ -16,6 +16,8 @@ mkdirSync(ogDir, { recursive: true });
 
 const WIDTH = 1200;
 const HEIGHT = 630;
+/** Lossless — just tighter deflate than sharp's default. */
+const PNG_OUT = { compressionLevel: 9, adaptiveFiltering: true };
 
 /** @type {{ slug: string; name: string; tint: string; source: string; line: string }[]} */
 const products = [
@@ -97,7 +99,7 @@ async function composeOg({ slug, name, tint, source, line }) {
   const out = join(ogDir, `${slug}.png`);
   await sharp(svg)
     .composite([{ input: art.data, left, top }])
-    .png()
+    .png(PNG_OUT)
     .toFile(out);
   console.log("wrote", out);
 }
@@ -125,7 +127,7 @@ async function composeEcosystem() {
   const out = join(ogDir, "ecosystem.png");
   await sharp(svg)
     .composite([{ input: art.data, left, top }])
-    .png()
+    .png(PNG_OUT)
     .toFile(out);
   console.log("wrote", out);
 }
