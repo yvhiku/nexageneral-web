@@ -8,7 +8,18 @@ Static export only; no runtime secrets or database needed.
 - Base activation: `/opt/nexa/nexageneral-web/deploy/activate.sh`
 - SEO redirect activation: `/opt/nexa/nexageneral-web/deploy/activate-seo.sh` (installs `nexa-corporate-seo.conf`: apex site + `www` → `https://nexa.ma$request_uri` with ACME preserved)
 
-## Activate base site
+## Deploy a new release
+
+From your laptop (after `npm run build`):
+
+```sh
+REL="20260909-<sha>"
+rsync -az --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r --checksum out/ nexa@72.60.133.228:/opt/nexa/nexageneral-web/releases/$REL/
+ssh nexa@72.60.133.228 "ln -sfn releases/$REL /opt/nexa/nexageneral-web/current.tmp && mv -Tf /opt/nexa/nexageneral-web/current.tmp /opt/nexa/nexageneral-web/current"
+```
+
+`--chmod` keeps files world-readable so Nginx can serve `/brand/nexa.png` (Organization logo). Without it, macOS umask can leave files as `600` and Nginx returns 403.
+
 
 ```sh
 ssh nexa@72.60.133.228
