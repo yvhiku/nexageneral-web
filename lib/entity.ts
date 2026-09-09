@@ -16,8 +16,8 @@ export const NEXA_ENTITY_DESCRIPTION =
 
 export const NEXA_SITE_NAME = "Nexa";
 export const NEXA_ORIGIN = "https://nexa.ma";
-/** Prefer transparent PNG for crawlers; stable path — do not rotate. */
-export const NEXA_LOGO = `${NEXA_ORIGIN}/icon-512.png`;
+/** Full brand mark for schema.org Organization.logo (same pattern as Nexa Stays). */
+export const NEXA_LOGO = `${NEXA_ORIGIN}/brand/nexa.png`;
 export const ORGANIZATION_ID = `${NEXA_ORIGIN}/#organization`;
 export const WEBSITE_ID = `${NEXA_ORIGIN}/#website`;
 
@@ -43,8 +43,6 @@ export function getOrganizationJsonLd() {
     logo: {
       "@type": "ImageObject",
       url: NEXA_LOGO,
-      width: 512,
-      height: 512,
     },
     image: NEXA_LOGO,
     description: NEXA_ENTITY_DESCRIPTION,

@@ -18,18 +18,26 @@ The site is a static export with `images.unoptimized`, so nothing is resized or 
 
 ## Favicons
 
-Built from `public/brand/nexa-favicon-transparent.png` by `npm run favicons`: transparent blue mark (no tile). **Stable public URLs — do not rotate filenames:**
+Same pipeline as Nexa Stays (`nexastays_web/scripts/generate-pwa-icons.ts`): source `public/brand/nexa.png`, knock dark plate to alpha, render on a transparent canvas with ~8% padding.
+
+```bash
+npm run favicons
+```
+
+**Stable public URLs — do not rotate filenames** (Google caches by path):
 
 | URL | Size |
 |-----|------|
 | `/icon-48.png` | 48×48 (listed first; Google Search preferred) |
 | `/icon.png` | 32×32 |
 | `/icon-192.png` | 192×192 |
-| `/icon-512.png` | 512×512 (also `Organization.logo` / `NEXA_LOGO`) |
+| `/icon-512.png` | 512×512 |
 | `/apple-icon.png` | 180×180 |
 | `/favicon.ico` | 16 + 32 + 48 |
 
-Hostname consolidation is **Nginx on the VPS** (`www` → `https://nexa.ma$request_uri`), not `vercel.json`. After deploy, request indexing for `https://nexa.ma/` in Search Console; the SERP icon updates on Google's recrawl schedule.
+Schema `Organization.logo` uses the full mark at `/brand/nexa.png` (same pattern as Stays `/images/nexastays.png`). Google draws the white circle in SERP around the transparent mark — do not bake a white disc into the file.
+
+Hostname consolidation is **Nginx on the VPS** (`www` → `https://nexa.ma$request_uri`), not `vercel.json`. After deploy, request indexing for `https://nexa.ma/` in Search Console.
 
 ## Design rules (locked)
 

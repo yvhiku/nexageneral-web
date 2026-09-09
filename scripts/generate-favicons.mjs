@@ -1,9 +1,11 @@
 /**
- * Transparent favicons from the Nexa mark with its external outline removed.
+ * Favicons from public/brand/nexa.png — same pipeline as nexastays_web
+ * (scripts/generate-pwa-icons.ts): knock dark plate to alpha, then render the
+ * mark on a transparent canvas with ~8% padding.
  *
- * Outputs (all in public/):
- *   icon-48.png (Google's preferred size), icon.png (32), icon-192.png,
- *   icon-512.png, apple-icon.png (180), favicon.ico (16 + 32 + 48, PNG-packed)
+ * Stable public URLs (do not rotate filenames — Google caches by path):
+ *   icon-48.png, icon.png (32), icon-192.png, icon-512.png,
+ *   apple-icon.png (180), favicon.ico (16 + 32 + 48)
  *
  * Run: npm run favicons
  */
@@ -13,39 +15,54 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = join(root, "public/brand/nexa-favicon-transparent.png");
+const SOURCE = join(root, "public/brand/nexa.png");
 const out = (f) => join(root, "public", f);
 
-const MARK_RATIO = 0.94;
+const FAVICON_PADDING = 0.08;
+const BLACK_LUMA_THRESHOLD = 28;
 
-/** Trimmed mark, once, at high resolution. */
-const mark = await sharp(src).trim({ threshold: 10 }).png().toBuffer();
-
-async function tile(size) {
-  const inner = Math.round(size * MARK_RATIO);
-  const m = await sharp(mark)
-    .resize({ width: inner, height: inner, fit: "inside", kernel: "lanczos3" })
+async function knockoutBlackToAlpha(sourceBuf) {
+  const { data, info } = await sharp(sourceBuf)
+    .ensureAlpha()
+    .raw()
     .toBuffer({ resolveWithObject: true });
-  return sharp({ create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
-    .composite([
-      {
-        input: m.data,
-        left: Math.round((size - m.info.width) / 2),
-        top: Math.round((size - m.info.height) / 2),
-      },
-    ])
-    .png({ compressionLevel: 9 })
+
+  const pixels = Buffer.from(data);
+  for (let i = 0; i < pixels.length; i += 4) {
+    const luma = 0.2126 * pixels[i] + 0.7152 * pixels[i + 1] + 0.0722 * pixels[i + 2];
+    if (luma <= BLACK_LUMA_THRESHOLD) pixels[i + 3] = 0;
+  }
+
+  return sharp(pixels, {
+    raw: { width: info.width, height: info.height, channels: 4 },
+  })
+    .png()
     .toBuffer();
 }
 
-const pngs = {};
-for (const size of [16, 32, 48, 180, 192, 512]) pngs[size] = await tile(size);
+async function renderTransparent(markBuf, size, padding = FAVICON_PADDING) {
+  const inner = Math.max(1, Math.round(size * (1 - 2 * padding)));
+  const logo = await sharp(markBuf)
+    .resize(inner, inner, {
+      fit: "contain",
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+      kernel: "lanczos3",
+    })
+    .png()
+    .toBuffer();
 
-writeFileSync(out("icon.png"), pngs[32]);
-writeFileSync(out("icon-48.png"), pngs[48]);
-writeFileSync(out("icon-192.png"), pngs[192]);
-writeFileSync(out("icon-512.png"), pngs[512]);
-writeFileSync(out("apple-icon.png"), pngs[180]);
+  return sharp({
+    create: {
+      width: size,
+      height: size,
+      channels: 4,
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    },
+  })
+    .composite([{ input: logo, gravity: "centre" }])
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+}
 
 /** ICO container with PNG-encoded entries (supported by every modern browser). */
 function ico(entries) {
@@ -70,6 +87,19 @@ function ico(entries) {
   return Buffer.concat([header, dir, ...entries.map(([, d]) => d)]);
 }
 
+const source = await sharp(SOURCE).png().toBuffer();
+const mark = await knockoutBlackToAlpha(source);
+
+const pngs = {};
+for (const size of [16, 32, 48, 180, 192, 512]) {
+  pngs[size] = await renderTransparent(mark, size);
+}
+
+writeFileSync(out("icon.png"), pngs[32]);
+writeFileSync(out("icon-48.png"), pngs[48]);
+writeFileSync(out("icon-192.png"), pngs[192]);
+writeFileSync(out("icon-512.png"), pngs[512]);
+writeFileSync(out("apple-icon.png"), pngs[180]);
 writeFileSync(
   out("favicon.ico"),
   ico([
@@ -79,4 +109,6 @@ writeFileSync(
   ]),
 );
 
-console.log("wrote icon.png, icon-48.png, icon-192.png, icon-512.png, apple-icon.png, favicon.ico");
+console.log(
+  "wrote icon.png, icon-48.png, icon-192.png, icon-512.png, apple-icon.png, favicon.ico (Stays-style transparent mark)",
+);

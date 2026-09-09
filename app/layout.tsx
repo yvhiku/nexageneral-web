@@ -26,12 +26,14 @@ export const metadata: Metadata = {
     absolute: homeSeo.en.title,
     template: "%s | Nexa",
   },
-  // Stable transparent favicon URLs — do not rotate filenames (Google caches by URL).
+  // Transparent mark favicons (Stays-style knockout). Stable URLs — do not rotate.
+  // Google prefers a crawlable 48×48 PNG; list it first.
   icons: {
     icon: [
       { url: "/icon-48.png", type: "image/png", sizes: "48x48" },
       { url: "/icon.png", type: "image/png", sizes: "32x32" },
       { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
       { url: "/favicon.ico", sizes: "any" },
     ],
     apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
