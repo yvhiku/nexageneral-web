@@ -1,9 +1,5 @@
 /**
- * Favicons from the parent brand mark (public/brand/nexa.png).
- *
- * The blue mark sits on a light rounded tile so it reads as a clear square at
- * 16–48px — Google Search only shows custom favicons that are recognisable at
- * that size, and rejects sparse/transparent marks in favour of the globe icon.
+ * Transparent favicons from the Nexa mark with its external outline removed.
  *
  * Outputs (all in public/):
  *   icon-48.png (Google's preferred size), icon.png (32), icon-192.png,
@@ -17,26 +13,20 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = join(root, "public/brand/nexa.png");
+const src = join(root, "public/brand/nexa-favicon-transparent.png");
 const out = (f) => join(root, "public", f);
 
-const TILE = "#eaf2fc"; // pale brand tint — readable in light and dark UIs
-const MARK_RATIO = 0.74; // mark occupies 74% of the tile
-const RADIUS_RATIO = 0.22;
+const MARK_RATIO = 0.94;
 
 /** Trimmed mark, once, at high resolution. */
 const mark = await sharp(src).trim({ threshold: 10 }).png().toBuffer();
 
 async function tile(size) {
-  const r = Math.round(size * RADIUS_RATIO);
-  const bg = Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="${size}" height="${size}" rx="${r}" ry="${r}" fill="${TILE}"/></svg>`,
-  );
   const inner = Math.round(size * MARK_RATIO);
   const m = await sharp(mark)
     .resize({ width: inner, height: inner, fit: "inside", kernel: "lanczos3" })
     .toBuffer({ resolveWithObject: true });
-  return sharp(bg)
+  return sharp({ create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite([
       {
         input: m.data,

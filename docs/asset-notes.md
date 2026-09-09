@@ -18,9 +18,18 @@ The site is a static export with `images.unoptimized`, so nothing is resized or 
 
 ## Favicons
 
-Built from `public/brand/nexa.png` by `npm run favicons`: blue mark on a pale rounded tile (`#eaf2fc`) so it stays recognisable at 16–48px. Google Search needs a clear square at 48px (`icon-48.png` is listed first in `app/layout.tsx`); sparse transparent marks fall back to the globe icon. One icon set only — no `app/icon.png` file conventions, no manual `<link>`s.
+Built from `public/brand/nexa-favicon-transparent.png` by `npm run favicons`: transparent blue mark (no tile). **Stable public URLs — do not rotate filenames:**
 
-`vercel.json` 301s `www.nexa.ma` → `nexa.ma` so Google associates the favicon with a single host. After deploy, request indexing for `https://nexa.ma/` in Search Console; the SERP icon updates on Google's recrawl schedule.
+| URL | Size |
+|-----|------|
+| `/icon-48.png` | 48×48 (listed first; Google Search preferred) |
+| `/icon.png` | 32×32 |
+| `/icon-192.png` | 192×192 |
+| `/icon-512.png` | 512×512 (also `Organization.logo` / `NEXA_LOGO`) |
+| `/apple-icon.png` | 180×180 |
+| `/favicon.ico` | 16 + 32 + 48 |
+
+Hostname consolidation is **Nginx on the VPS** (`www` → `https://nexa.ma$request_uri`), not `vercel.json`. After deploy, request indexing for `https://nexa.ma/` in Search Console; the SERP icon updates on Google's recrawl schedule.
 
 ## Design rules (locked)
 

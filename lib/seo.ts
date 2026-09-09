@@ -111,21 +111,21 @@ export { absoluteCanonical };
 
 export const homeSeo = {
   en: {
-    title: "Nexa Morocco — Connected Digital Services Ecosystem",
+    title: "Nexa — Moroccan Technology Company",
     description:
-      "Nexa is a Moroccan technology company building connected digital services across accommodation, mobility, delivery, payments, groceries, commerce and careers.",
+      "Nexa is a Moroccan technology company building connected digital services for everyday life. Discover our ecosystem, starting with Nexa Stays.",
     path: "/",
   },
   fr: {
-    title: "Nexa Maroc — Écosystème de services numériques connectés",
+    title: "Nexa — Entreprise technologique marocaine",
     description:
-      "Nexa est une entreprise technologique marocaine qui construit des services numériques spécialisés pour le quotidien — hébergement, mobilité, livraison, paiements, courses, commerce et emploi.",
+      "Nexa est une entreprise technologique marocaine qui développe des services numériques connectés pour le quotidien. Découvrez notre écosystème, à commencer par Nexa Stays.",
     path: "/fr/",
   },
   ar: {
-    title: "نكسا المغرب — نظام بيئي للخدمات الرقمية المترابطة",
+    title: "نكسا — شركة تكنولوجيا مغربية",
     description:
-      "نكسا شركة تكنولوجيا مغربية تبني خدمات رقمية متخصصة للحياة اليومية — الإقامة والتنقل والتوصيل والمدفوعات والبقالة والتجارة والتوظيف.",
+      "نكسا شركة تكنولوجيا مغربية تبني خدمات رقمية مترابطة للحياة اليومية. اكتشف منظومتنا، بدءًا من نكسا ستايز.",
     path: "/ar/",
   },
 } as const satisfies Record<string, SeoEntry>;

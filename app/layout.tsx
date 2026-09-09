@@ -26,8 +26,7 @@ export const metadata: Metadata = {
     absolute: homeSeo.en.title,
     template: "%s | Nexa",
   },
-  // Single icon set (built by `npm run favicons`). 48px first: Google Search
-  // picks the 48×48 PNG for result favicons.
+  // Stable transparent favicon URLs — do not rotate filenames (Google caches by URL).
   icons: {
     icon: [
       { url: "/icon-48.png", type: "image/png", sizes: "48x48" },

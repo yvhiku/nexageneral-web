@@ -16,7 +16,7 @@ export const NEXA_ENTITY_DESCRIPTION =
 
 export const NEXA_SITE_NAME = "Nexa";
 export const NEXA_ORIGIN = "https://nexa.ma";
-/** Prefer PNG for crawlers; blue parent mark. */
+/** Prefer transparent PNG for crawlers; stable path — do not rotate. */
 export const NEXA_LOGO = `${NEXA_ORIGIN}/icon-512.png`;
 export const ORGANIZATION_ID = `${NEXA_ORIGIN}/#organization`;
 export const WEBSITE_ID = `${NEXA_ORIGIN}/#website`;
@@ -71,6 +71,7 @@ export function getWebSiteJsonLd() {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     name: NEXA_SITE_NAME,
+    alternateName: ["Nexa Morocco", "Nexa Maroc"],
     url: NEXA_ORIGIN,
     description: NEXA_ENTITY_DESCRIPTION,
     publisher: { "@id": ORGANIZATION_ID },
