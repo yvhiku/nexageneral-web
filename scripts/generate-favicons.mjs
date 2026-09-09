@@ -3,23 +3,34 @@
  * (scripts/generate-pwa-icons.ts): knock dark plate to alpha, then render the
  * mark on a transparent canvas with ~8% padding.
  *
- * Stable public URLs (do not rotate filenames — Google caches by path):
- *   icon-48.png, icon.png (32), icon-192.png, icon-512.png,
- *   apple-icon.png (180), favicon.ico (16 + 32 + 48)
+ * Versioned outputs (Chrome favicon-cache bust, Stays pattern):
+ *   public/icons/favicon-{16,32,48}.v1.png
+ *   public/icons/apple-touch-180.v1.png
+ *   public/icons/icon-{192,512}.v1.png
  *
+ * Also writes root fallbacks used by some crawlers:
+ *   public/favicon.ico, public/icon-48.png, public/icon.png, …
+ *
+ * Keep ICON_VERSION in sync with lib/site-icons.ts → SITE_ICON_VERSION.
  * Run: npm run favicons
  */
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE = join(root, "public/brand/nexa.png");
+const iconsDir = join(root, "public/icons");
 const out = (f) => join(root, "public", f);
+const iconOut = (f) => join(iconsDir, f);
 
+/** Keep in sync with lib/site-icons.ts → SITE_ICON_VERSION */
+const ICON_VERSION = "v1";
 const FAVICON_PADDING = 0.08;
 const BLACK_LUMA_THRESHOLD = 28;
+
+mkdirSync(iconsDir, { recursive: true });
 
 async function knockoutBlackToAlpha(sourceBuf) {
   const { data, info } = await sharp(sourceBuf)
@@ -64,7 +75,6 @@ async function renderTransparent(markBuf, size, padding = FAVICON_PADDING) {
     .toBuffer();
 }
 
-/** ICO container with PNG-encoded entries (supported by every modern browser). */
 function ico(entries) {
   const header = Buffer.alloc(6);
   header.writeUInt16LE(0, 0);
@@ -95,6 +105,14 @@ for (const size of [16, 32, 48, 180, 192, 512]) {
   pngs[size] = await renderTransparent(mark, size);
 }
 
+writeFileSync(iconOut(`favicon-16.${ICON_VERSION}.png`), pngs[16]);
+writeFileSync(iconOut(`favicon-32.${ICON_VERSION}.png`), pngs[32]);
+writeFileSync(iconOut(`favicon-48.${ICON_VERSION}.png`), pngs[48]);
+writeFileSync(iconOut(`apple-touch-180.${ICON_VERSION}.png`), pngs[180]);
+writeFileSync(iconOut(`icon-192.${ICON_VERSION}.png`), pngs[192]);
+writeFileSync(iconOut(`icon-512.${ICON_VERSION}.png`), pngs[512]);
+
+// Root fallbacks (crawlers / legacy)
 writeFileSync(out("icon.png"), pngs[32]);
 writeFileSync(out("icon-48.png"), pngs[48]);
 writeFileSync(out("icon-192.png"), pngs[192]);
@@ -110,5 +128,5 @@ writeFileSync(
 );
 
 console.log(
-  "wrote icon.png, icon-48.png, icon-192.png, icon-512.png, apple-icon.png, favicon.ico (Stays-style transparent mark)",
+  `wrote public/icons/*.${ICON_VERSION}.png + root favicon.ico/icon-*.png (Stays-style transparent mark)`,
 );

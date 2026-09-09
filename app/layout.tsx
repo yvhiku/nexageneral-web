@@ -9,12 +9,14 @@ import "@fontsource/manrope/700.css";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { FaviconDebugProbe } from "@/components/favicon-debug-probe";
 import {
   DEFAULT_OG_IMAGE,
   homeSeo,
   toMetadata,
   homeLanguageAlternates,
 } from "@/lib/seo";
+import { SITE_FAVICON_ICO, SITE_ICONS } from "@/lib/site-icons";
 
 const enHome = toMetadata(homeSeo.en, { alternates: homeLanguageAlternates });
 
@@ -26,17 +28,17 @@ export const metadata: Metadata = {
     absolute: homeSeo.en.title,
     template: "%s | Nexa",
   },
-  // Transparent mark favicons (Stays-style knockout). Stable URLs — do not rotate.
-  // Google prefers a crawlable 48×48 PNG; list it first.
+  // Versioned PNG paths (Stays pattern) so Chrome drops a stuck letter-N favicon cache.
   icons: {
     icon: [
-      { url: "/icon-48.png", type: "image/png", sizes: "48x48" },
-      { url: "/icon.png", type: "image/png", sizes: "32x32" },
-      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
-      { url: "/favicon.ico", sizes: "any" },
+      { url: SITE_ICONS.favicon48, type: "image/png", sizes: "48x48" },
+      { url: SITE_ICONS.favicon32, type: "image/png", sizes: "32x32" },
+      { url: SITE_ICONS.favicon16, type: "image/png", sizes: "16x16" },
+      { url: SITE_ICONS.icon192, type: "image/png", sizes: "192x192" },
+      { url: SITE_ICONS.icon512, type: "image/png", sizes: "512x512" },
+      { url: SITE_FAVICON_ICO, sizes: "any" },
     ],
-    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: SITE_ICONS.apple, sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     type: "website",
@@ -64,6 +66,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <Navigation />
+        <FaviconDebugProbe />
         {children}
         <Footer />
       </body>

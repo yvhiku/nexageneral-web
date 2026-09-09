@@ -46,7 +46,7 @@ export function Navigation() {
     <header className="site-header">
       <div className="nav-wrap">
         <Link href={home} aria-label={t.homeAria} className="wordmark">
-          <Brand product="black" size={31} />
+          <Brand product="nexa" size={31} />
           nexa<span className="wordmark-dot">.</span>
         </Link>
         <nav aria-label={t.mainNav} className="desktop-nav">

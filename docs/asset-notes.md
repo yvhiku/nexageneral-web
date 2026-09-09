@@ -18,26 +18,25 @@ The site is a static export with `images.unoptimized`, so nothing is resized or 
 
 ## Favicons
 
-Same pipeline as Nexa Stays (`nexastays_web/scripts/generate-pwa-icons.ts`): source `public/brand/nexa.png`, knock dark plate to alpha, render on a transparent canvas with ~8% padding.
+Same pipeline as Nexa Stays: source `public/brand/nexa.png`, knock dark plate to alpha, ~8% padding, transparent canvas.
 
 ```bash
 npm run favicons
 ```
 
-**Stable public URLs — do not rotate filenames** (Google caches by path):
+**Versioned public URLs** (Chrome caches favicons by path — bump `SITE_ICON_VERSION` in `lib/site-icons.ts` when the mark must refresh):
 
 | URL | Size |
 |-----|------|
-| `/icon-48.png` | 48×48 (listed first; Google Search preferred) |
-| `/icon.png` | 32×32 |
-| `/icon-192.png` | 192×192 |
-| `/icon-512.png` | 512×512 |
-| `/apple-icon.png` | 180×180 |
-| `/favicon.ico` | 16 + 32 + 48 |
+| `/icons/favicon-48.v1.png` | 48×48 (listed first) |
+| `/icons/favicon-32.v1.png` | 32×32 |
+| `/icons/favicon-16.v1.png` | 16×16 |
+| `/icons/icon-192.v1.png` | 192×192 |
+| `/icons/icon-512.v1.png` | 512×512 |
+| `/icons/apple-touch-180.v1.png` | 180×180 |
+| `/favicon.ico` | root fallback (16+32+48) |
 
-Schema `Organization.logo` uses the full mark at `/brand/nexa.png` (same pattern as Stays `/images/nexastays.png`). Google draws the white circle in SERP around the transparent mark — do not bake a white disc into the file.
-
-Hostname consolidation is **Nginx on the VPS** (`www` → `https://nexa.ma$request_uri`), not `vercel.json`. After deploy, request indexing for `https://nexa.ma/` in Search Console.
+Schema `Organization.logo` uses `/brand/nexa.png`. Do not use a letter monogram.
 
 ## Design rules (locked)
 
