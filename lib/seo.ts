@@ -8,6 +8,8 @@ export type SeoEntry = {
   path: string;
   ogTitle?: string;
   ogDescription?: string;
+  /** Absolute-path OG image under public/, e.g. `/og/go.png` */
+  ogImage?: string;
 };
 
 /** Site-wide link-preview image (`public/og/default.png`). */
@@ -17,6 +19,8 @@ export const DEFAULT_OG_IMAGE = {
   height: 1024,
   alt: "Nexa — One ecosystem for everyday life. Built in Morocco.",
 } as const;
+
+const PRODUCT_OG_SIZE = { width: 1200, height: 630 } as const;
 
 function absoluteCanonical(path: string) {
   const p = path.startsWith("/") ? path : `/${path}`;
@@ -31,6 +35,13 @@ export function toMetadata(
   const ogTitle = entry.ogTitle ?? entry.title;
   const ogDescription = entry.ogDescription ?? entry.description;
   const path = entry.path.endsWith("/") ? entry.path : `${entry.path}/`;
+  const image = entry.ogImage
+    ? {
+        url: entry.ogImage,
+        ...PRODUCT_OG_SIZE,
+        alt: ogTitle,
+      }
+    : { ...DEFAULT_OG_IMAGE };
   return {
     title: { absolute: entry.title },
     description: entry.description,
@@ -42,13 +53,13 @@ export function toMetadata(
       title: ogTitle,
       description: ogDescription,
       url: path,
-      images: [{ ...DEFAULT_OG_IMAGE }],
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description: ogDescription,
-      images: [DEFAULT_OG_IMAGE.url],
+      images: [image.url],
     },
   };
 }
@@ -131,6 +142,7 @@ export const pageSeo: Record<string, SeoEntry> = {
     description:
       "Learn how Nexa’s specialized digital services connect across accommodation, mobility, delivery, payments, groceries, commerce and careers in Morocco.",
     path: "/ecosystem/",
+    ogImage: "/og/ecosystem.png",
   },
   "why-nexa": {
     title: "Why Nexa — Building Digital Services for Morocco",
@@ -202,36 +214,42 @@ export const productSeo: Record<string, SeoEntry> = {
     description:
       "Nexa Stays is Nexa’s accommodation platform for clearer, more structured short-term stays in Morocco — the starting product of the Nexa ecosystem.",
     path: "/stays/",
+    ogImage: "/og/stays.png",
   },
   go: {
     title: "Nexa Go Morocco — Rides, Food & Local Delivery | Nexa",
     description:
       "Nexa Go is Nexa’s mobility and delivery platform in Morocco for local rides, restaurant food delivery and general local delivery — part of the Nexa ecosystem.",
     path: "/go/",
+    ogImage: "/og/go.png",
   },
   pay: {
     title: "Nexa Pay Morocco — Digital Payments for the Nexa Ecosystem",
     description:
       "Nexa Pay Morocco is planned as the payment layer for supported Nexa services and merchant experiences in Morocco, developed progressively within the Nexa ecosystem.",
     path: "/pay/",
+    ogImage: "/og/pay.png",
   },
   fresh: {
     title: "Nexa Fresh — Grocery Delivery in Morocco | Nexa",
     description:
       "Nexa Fresh is Nexa’s dedicated grocery-delivery service for everyday essentials in Morocco — separate from restaurant food delivery on Nexa Go.",
     path: "/fresh/",
+    ogImage: "/og/fresh.png",
   },
   market: {
     title: "Nexa Market — Digital Marketplace in Morocco | Nexa",
     description:
       "Nexa Market is planned as Nexa’s e-commerce marketplace connecting customers and merchants in Morocco.",
     path: "/market/",
+    ogImage: "/og/market.png",
   },
   jobs: {
     title: "Nexa Jobs — Jobs & Recruitment Platform in Morocco | Nexa",
     description:
       "Nexa Jobs is planned as Nexa’s careers platform connecting candidates and employers in Morocco.",
     path: "/jobs/",
+    ogImage: "/og/jobs.png",
   },
   maps: {
     title: "Nexa Maps — Future Nexa Concept",

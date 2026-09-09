@@ -376,18 +376,26 @@ export default async function ContentPage({
   if (!page) notFound();
   return (
     <main id="main">
-      <section className="page-hero container">
-        <Bread
-          label={
-            slug === "why-nexa"
-              ? "Why Nexa"
-              : slug[0].toUpperCase() + slug.slice(1)
-          }
-          slug={slug}
-        />
-        <div className="eyebrow">{page.eyebrow}</div>
-        <h1>{page.title}</h1>
-        <p>{page.description}</p>
+      <section
+        className={`page-hero container${
+          slug === "about" || slug === "why-nexa" ? " corp-hero" : ""
+        }`}
+      >
+        <div>
+          <Bread
+            label={
+              slug === "why-nexa"
+                ? "Why Nexa"
+                : slug[0].toUpperCase() + slug.slice(1)
+            }
+            slug={slug}
+          />
+          <div className="eyebrow">{page.eyebrow}</div>
+          <h1>{page.title}</h1>
+          <p>{page.description}</p>
+        </div>
+        {slug === "about" && <Mascot name="nexaparentabout" />}
+        {slug === "why-nexa" && <Mascot name="nexaparentwhy" />}
       </section>
       <div className="container page-content">
         {slug === "products" && (
@@ -465,6 +473,9 @@ export default async function ContentPage({
                 </p>
               </div>
               <Ecosystem />
+            </div>
+            <div className="ecosystem-family" aria-hidden="true">
+              <Mascot name="family" />
             </div>
             <div className="prose" style={{ marginTop: 60, maxWidth: 760 }}>
               <h2>How connections could work</h2>
@@ -799,7 +810,8 @@ export default async function ContentPage({
         )}
         {slug === "careers" && (
           <>
-            <div className="principles">
+            <div className="careers-with-mascot">
+              <div className="principles">
               {[
                 [
                   "Engineering",
@@ -825,6 +837,8 @@ export default async function ContentPage({
                   <p>{body}</p>
                 </div>
               ))}
+              </div>
+              <Mascot name="nexajobscareers" />
             </div>
             <div className="empty-state">
               <h2>Keep in touch.</h2>

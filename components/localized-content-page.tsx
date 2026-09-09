@@ -286,15 +286,23 @@ export function LocalizedContentPage({
           ),
         }}
       />
-      <section className="page-hero container">
-        <div className="breadcrumbs">
-          <Link href={lp("/")}>Nexa</Link>
-          <span>/</span>
-          <span>{company.hero.eyebrow}</span>
+      <section
+        className={`page-hero container${
+          slug === "about" || slug === "why-nexa" ? " corp-hero" : ""
+        }`}
+      >
+        <div>
+          <div className="breadcrumbs">
+            <Link href={lp("/")}>Nexa</Link>
+            <span>/</span>
+            <span>{company.hero.eyebrow}</span>
+          </div>
+          <div className="eyebrow">{company.hero.eyebrow}</div>
+          <h1>{company.hero.title}</h1>
+          <p>{company.hero.description}</p>
         </div>
-        <div className="eyebrow">{company.hero.eyebrow}</div>
-        <h1>{company.hero.title}</h1>
-        <p>{company.hero.description}</p>
+        {slug === "about" && <Mascot name="nexaparentabout" />}
+        {slug === "why-nexa" && <Mascot name="nexaparentwhy" />}
       </section>
       <div className="container page-content">
         {slug === "products" && (
@@ -351,6 +359,9 @@ export function LocalizedContentPage({
                 ))}
               </div>
               <Ecosystem />
+            </div>
+            <div className="ecosystem-family" aria-hidden="true">
+              <Mascot name="family" />
             </div>
             <div className="prose" style={{ marginTop: 60, maxWidth: 760 }}>
               {company.sections.slice(1).map((s) => (
@@ -428,11 +439,14 @@ export function LocalizedContentPage({
               </p>
             )}
             {slug === "careers" && (
-              <p>
-                <Link href={lp("/jobs")} className="text-link">
-                  Nexa Jobs <Arrow />
-                </Link>
-              </p>
+              <div className="careers-with-mascot" style={{ marginTop: 40 }}>
+                <p>
+                  <Link href={lp("/jobs")} className="text-link">
+                    Nexa Jobs <Arrow />
+                  </Link>
+                </p>
+                <Mascot name="nexajobscareers" />
+              </div>
             )}
           </div>
         )}

@@ -52,6 +52,8 @@ export function Status({
 }
 const mascotSize: Record<string, { width: number; height: number }> = {
   parent: { width: 890, height: 1162 },
+  nexaparentabout: { width: 1024, height: 1536 },
+  nexaparentwhy: { width: 1230, height: 1278 },
   go: { width: 1214, height: 1295 },
   nexagoriding: { width: 1375, height: 1144 },
   nexafreshriding: { width: 1374, height: 1145 },
@@ -59,6 +61,13 @@ const mascotSize: Record<string, { width: number; height: number }> = {
   nexapaybanner: { width: 1374, height: 1145 },
   nexamarketbanner: { width: 1374, height: 1145 },
   nexajobsbanner: { width: 1374, height: 1145 },
+  nexastaysroadmap: { width: 1024, height: 1536 },
+  nexagoroadmap: { width: 1145, height: 1374 },
+  nexapayroadmap: { width: 1145, height: 1374 },
+  nexafreshroadmap: { width: 1312, height: 1199 },
+  nexamarketroadmap: { width: 1312, height: 1199 },
+  nexajobsroadmap: { width: 1199, height: 1312 },
+  nexajobscareers: { width: 1199, height: 1312 },
   fresh: { width: 1178, height: 1335 },
   pay: { width: 1230, height: 1278 },
   market: { width: 1254, height: 1254 },
@@ -70,12 +79,21 @@ const mascotSize: Record<string, { width: number; height: number }> = {
 const mascotAlt: Record<string, string> = {
   family: "Nexa family of product mascots",
   parent: "Nexa Parent mascot",
+  nexaparentabout: "Nexa Parent mascot",
+  nexaparentwhy: "Nexa Parent mascot",
   nexagoriding: "Nexa Go mascot",
   nexafreshriding: "Nexa Fresh mascot",
   nexastaysbanner: "Nexa Stays mascot",
   nexapaybanner: "Nexa Pay mascot",
   nexamarketbanner: "Nexa Market mascot",
   nexajobsbanner: "Nexa Jobs mascot",
+  nexastaysroadmap: "Nexa Stays",
+  nexagoroadmap: "Nexa Go",
+  nexapayroadmap: "Nexa Pay",
+  nexafreshroadmap: "Nexa Fresh",
+  nexamarketroadmap: "Nexa Market",
+  nexajobsroadmap: "Nexa Jobs",
+  nexajobscareers: "Nexa Jobs careers",
 };
 
 export function Mascot({

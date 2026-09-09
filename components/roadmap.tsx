@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { Mascot } from "@/components/brand";
 import type { Locale } from "@/lib/i18n";
+import { localePath } from "@/lib/i18n";
 
 type Stage = {
   label: string;
   status: string;
-  items: string[];
+  items: { name: string; slug: string; mascot: string }[];
   active?: boolean;
 };
 
@@ -13,62 +15,98 @@ const stagesByLocale: Record<Locale, Stage[]> = {
     {
       label: "First",
       status: "Launch product",
-      items: ["Stays"],
+      items: [{ name: "Stays", slug: "stays", mascot: "nexastaysroadmap" }],
       active: true,
     },
     {
       label: "Building progressively",
       status: "In development roadmap",
-      items: ["Pay"],
+      items: [{ name: "Pay", slug: "pay", mascot: "nexapayroadmap" }],
     },
-    { label: "Next phase", status: "Planned", items: ["Go", "Fresh"] },
+    {
+      label: "Next phase",
+      status: "Planned",
+      items: [
+        { name: "Go", slug: "go", mascot: "nexagoroadmap" },
+        { name: "Fresh", slug: "fresh", mascot: "nexafreshroadmap" },
+      ],
+    },
     {
       label: "Expanding",
       status: "Long-term roadmap",
-      items: ["Market", "Jobs"],
+      items: [
+        { name: "Market", slug: "market", mascot: "nexamarketroadmap" },
+        { name: "Jobs", slug: "jobs", mascot: "nexajobsroadmap" },
+      ],
     },
-    { label: "Beyond", status: "Future", items: ["Maps", "Cloud"] },
+    { label: "Beyond", status: "Future", items: [] },
   ],
   fr: [
     {
       label: "D’abord",
       status: "Produit de lancement",
-      items: ["Stays"],
+      items: [{ name: "Stays", slug: "stays", mascot: "nexastaysroadmap" }],
       active: true,
     },
     {
       label: "Construction progressive",
       status: "Feuille de route — développement",
-      items: ["Pay"],
+      items: [{ name: "Pay", slug: "pay", mascot: "nexapayroadmap" }],
     },
-    { label: "Phase suivante", status: "Planifié", items: ["Go", "Fresh"] },
+    {
+      label: "Phase suivante",
+      status: "Planifié",
+      items: [
+        { name: "Go", slug: "go", mascot: "nexagoroadmap" },
+        { name: "Fresh", slug: "fresh", mascot: "nexafreshroadmap" },
+      ],
+    },
     {
       label: "Expansion",
       status: "Feuille de route long terme",
-      items: ["Market", "Jobs"],
+      items: [
+        { name: "Market", slug: "market", mascot: "nexamarketroadmap" },
+        { name: "Jobs", slug: "jobs", mascot: "nexajobsroadmap" },
+      ],
     },
-    { label: "Au-delà", status: "Futur", items: ["Maps", "Cloud"] },
+    { label: "Au-delà", status: "Futur", items: [] },
   ],
   ar: [
     {
       label: "أولاً",
       status: "منتج الإطلاق",
-      items: ["Stays"],
+      items: [{ name: "Stays", slug: "stays", mascot: "nexastaysroadmap" }],
       active: true,
     },
     {
       label: "بناء تدريجي",
       status: "في خارطة التطوير",
-      items: ["Pay"],
+      items: [{ name: "Pay", slug: "pay", mascot: "nexapayroadmap" }],
     },
-    { label: "المرحلة التالية", status: "مخطط", items: ["Go", "Fresh"] },
+    {
+      label: "المرحلة التالية",
+      status: "مخطط",
+      items: [
+        { name: "Go", slug: "go", mascot: "nexagoroadmap" },
+        { name: "Fresh", slug: "fresh", mascot: "nexafreshroadmap" },
+      ],
+    },
     {
       label: "التوسع",
       status: "خارطة طريق طويلة الأمد",
-      items: ["Market", "Jobs"],
+      items: [
+        { name: "Market", slug: "market", mascot: "nexamarketroadmap" },
+        { name: "Jobs", slug: "jobs", mascot: "nexajobsroadmap" },
+      ],
     },
-    { label: "ما بعد ذلك", status: "مستقبلي", items: ["Maps", "Cloud"] },
+    { label: "ما بعد ذلك", status: "مستقبلي", items: [] },
   ],
+};
+
+const beyondItems: Record<Locale, string[]> = {
+  en: ["Maps", "Cloud"],
+  fr: ["Maps", "Cloud"],
+  ar: ["Maps", "Cloud"],
 };
 
 const finePrint: Record<Locale, string> = {
@@ -79,6 +117,7 @@ const finePrint: Record<Locale, string> = {
 
 export function Roadmap({ locale = "en" }: { locale?: Locale }) {
   const stages = stagesByLocale[locale];
+  const beyond = beyondItems[locale];
   return (
     <>
       <div className="roadmap">
@@ -91,11 +130,35 @@ export function Roadmap({ locale = "en" }: { locale?: Locale }) {
               <span />0{i + 1}
             </div>
             <p className="eyebrow">{s.label}</p>
-            {s.items.map((item) => (
-              <Link key={item} href={`/${item.toLowerCase()}`}>
-                Nexa {item}
-              </Link>
-            ))}
+            {s.items.length > 0 ? (
+              <ul className="roadmap-products">
+                {s.items.map((item) => (
+                  <li key={item.slug}>
+                    <Link
+                      href={localePath(locale, `/${item.slug}`)}
+                      className="roadmap-product"
+                    >
+                      <Mascot
+                        name={item.mascot}
+                        className="roadmap-mascot"
+                      />
+                      <span>Nexa {item.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="roadmap-beyond">
+                {beyond.map((item) => (
+                  <Link
+                    key={item}
+                    href={localePath(locale, `/${item.toLowerCase()}`)}
+                  >
+                    Nexa {item}
+                  </Link>
+                ))}
+              </div>
+            )}
             <small>{s.status}</small>
           </div>
         ))}

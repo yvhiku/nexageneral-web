@@ -1,31 +1,52 @@
-# Nexa mascot asset preparation
+# Nexa mascot asset system
 
-## Current serving model (2026-09-08)
+## Serving model
 
-The site serves **PNG masters only** from `public/mascots/{name}.png` via `Mascot` in `components/brand.tsx`. Converted mascot WebPs are not used.
+Site serves **PNG masters** from `public/mascots/{name}.png` via `Mascot` in `components/brand.tsx`.
 
-| Name | File | Notes |
-|------|------|--------|
-| parent | `parent.png` | Homepage hero |
-| go | `go.png` | Homepage Go card (flying pose) |
-| nexagoriding | `nexagoriding.png` | `/go/` product page |
-| fresh | `fresh.png` | Homepage / product |
-| pay | `pay.png` | Homepage / product |
-| market | `market.png` | Homepage / product |
-| stays | `stays.png` | Homepage / product |
-| jobs | `jobs.png` | Homepage / product |
-| family | `family.png` | Final CTA |
+## Design rules (locked)
 
-## Optional background cut
+1. **Four roles** — Parent (corporate) · Product pose (home cards / compact markers) · Action/banner (product heroes + product OGs) · Family (rare ecosystem storytelling).
+2. **One dominant mascot per viewport.**
+3. **Prominence ∝ emotional storytelling** — high on heroes/errors/empty/social; low on specs/legal/dense copy.
+4. **Service boundaries** — Fresh = groceries · Go = rides / restaurant food / local delivery · Market = shopping · Pay = payments · Jobs = careers · Stays = accommodation · Parent = company/ecosystem.
+5. **Never reuse action banners as Roadmap/About/Why/Careers markers.**
 
-If a new PNG still has a studio black plate, edge flood-fill with:
+## Filename map (current flat layout)
+
+| Role | File | Use |
+|------|------|-----|
+| Parent about | `nexaparentabout.png` | About |
+| Parent why | `nexaparentwhy.png` | Why Nexa |
+| Parent neutral | `parent.png` | Home hero, 404 |
+| Stays roadmap | `nexastaysroadmap.png` | Roadmap marker |
+| Go roadmap | `nexagoroadmap.png` | Roadmap marker |
+| Pay roadmap | `nexapayroadmap.png` | Roadmap marker |
+| Fresh roadmap | `nexafreshroadmap.png` | Roadmap marker |
+| Market roadmap | `nexamarketroadmap.png` | Roadmap marker |
+| Jobs roadmap | `nexajobsroadmap.png` | Roadmap marker |
+| Jobs careers | `nexajobscareers.png` | Careers |
+| Family | `family.png` | Ecosystem + home CTA |
+| Action banners | `nexastaysbanner`, `nexagoriding`, `nexapaybanner`, `nexafreshriding`, `nexamarketbanner`, `nexajobsbanner` | Product pages |
+| Home poses | `stays`, `go`, `pay`, `fresh`, `market`, `jobs` | Homepage cards |
+
+## Open Graph
+
+Dedicated **1200×630** compositions in `public/og/` (not hero crops):
 
 ```bash
-node scripts/cut-mascot-bg.mjs <input.png> <output.webp>
+npm run og:products
 ```
 
-Prefer keeping/serving a transparent PNG master when the art is already cut. The helper currently writes WebP for tooling convenience; copy or re-export PNG for production if needed.
+| Page | OG file |
+|------|---------|
+| Product `/stays/` … `/jobs/` | `og/{slug}.png` |
+| Ecosystem | `og/ecosystem.png` |
+| Corporate default | `og/default.png` |
 
-## Earlier notes
+## Target taxonomy (future rename)
 
-Pose replacements (pay, market, jobs, stays) and earlier launch-set prep remain historical; see git history for prior WebP cutout workflow.
+```text
+public/mascots/{parent,stays,go,pay,fresh,market,jobs,family}/…
+public/og/default.png | stays|go|pay|fresh|market|jobs|ecosystem.png
+```
