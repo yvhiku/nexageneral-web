@@ -9,7 +9,6 @@ import "@fontsource/manrope/700.css";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { FaviconDebugProbe } from "@/components/favicon-debug-probe";
 import {
   DEFAULT_OG_IMAGE,
   homeSeo,
@@ -66,7 +65,6 @@ export default function RootLayout({
           Skip to content
         </a>
         <Navigation />
-        <FaviconDebugProbe />
         {children}
         <Footer />
       </body>
