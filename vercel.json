@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/google167835fadb409db0.html",
+      "destination": "/google167835fadb409db0/"
+    }
+  ]
+}
